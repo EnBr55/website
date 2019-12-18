@@ -7,21 +7,21 @@ import Home from './pages/home/Home'
 
 const App: React.FC = () => {
   return (
-		<div className='App'>
-			<Router>
-				<Switch>
-					<Route exact path='/'>
-						<Home />
-					</Route>
-					<Route>
-						<div>
-							<h1>404 - Page not Found :(</h1>
-								<a href={'https://benbraham.com'}>Go home</a>
-						</div>
-					</Route>
-				</Switch>
-			</Router>
-		</div>
+    <div className="App">
+      <Router>
+        <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route>
+            <div>
+              <h1>404 - Page not Found :(</h1>
+              <a href={'https://benbraham.com'}>Go home</a>
+            </div>
+          </Route>
+        </Switch>
+      </Router>
+    </div>
   )
 }
 
