@@ -2,14 +2,28 @@ import React from 'react'
 import './Navbar.css'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
+import Button from '@material-ui/core/Button'
+import { BrowserRouter as Router, Redirect } from 'react-router-dom'
 
 const Navbar: React.FC = () => {
+  const [redirect, setRedirect] = React.useState('')
   return (
-    <AppBar position="static">
-      <Toolbar>
-        Home
-      </Toolbar>
-    </AppBar>
+    <div>
+      <AppBar position="static">
+        <Router>
+          {redirect && <Redirect to={redirect} />}
+        </Router>
+        <Toolbar>
+          <Button onClick={() => setRedirect('/')}>Home</Button>
+          <div style={{backgroundColor: 'red', right: 100, width: '100px', height: '100%'}}>
+          </div>
+        </Toolbar>
+      </AppBar>
+      <div style={{height: '100px', backgroundColor: 'pink', width: '100%'}}>
+        <div style={{backgroundColor: 'red', width: '100px', height: '100%'}}>
+        </div>
+      </div>
+    </div>
    )
 }
 
