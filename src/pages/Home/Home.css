@@ -1,11 +1,11 @@
 .Home {
-	font-size: larger;
+  font-size: larger;
 }
 
 .Bio {
-	margin: 0 auto;
-	max-width: 45em;
-	padding-left: 1em;
-	padding-right: 1em;
+  margin: 0 auto;
+  max-width: 45em;
+  padding-left: 1em;
+  padding-right: 1em;
   text-align: start;
 }
