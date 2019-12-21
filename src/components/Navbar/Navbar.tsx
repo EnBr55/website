@@ -19,8 +19,9 @@ const Navbar: React.FC = () => {
           </div>
         </Toolbar>
       </AppBar>
-      <div style={{height: '100px', backgroundColor: 'pink', width: '100%'}}>
-        <div style={{backgroundColor: 'red', width: '100px', height: '100%'}}>
+      <div style={{height: '4em', backgroundColor: 'pink', width: '100%'}}>
+        <div className="navbar-item">
+          hi
         </div>
       </div>
     </div>

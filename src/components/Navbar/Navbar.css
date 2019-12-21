@@ -14,3 +14,13 @@ a:hover {
   color: orange;
 }
 
+.navbar-item {
+  height: 100%;
+  width: 7em;
+  text-align: center;
+  vertical-align: center;
+}
+
+.navbar-item:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+}
