@@ -5,13 +5,12 @@ import { BrowserRouter as Router, Redirect } from 'react-router-dom'
 type props = {
   text: string,
   redirectLocation: string
+  setRedirect(location: string): void
 }
 
-const NavbarItem: React.FC<props> = ({text, redirectLocation}) => {
-  const [redirect, setRedirect] = React.useState<string | undefined>(undefined)
+const NavbarItem: React.FC<props> = ({text, redirectLocation, setRedirect}) => {
   return (
     <div className='navbar-item noselect' onClick={() => setRedirect(redirectLocation)}>
-      {redirect !== undefined && <Redirect to={redirect} />}
     {text}
     </div>
   )
