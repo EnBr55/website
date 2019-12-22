@@ -8,8 +8,8 @@ const Navbar: React.FC = () => {
   return (
     <div className='navbar'>
       {redirect !== undefined && <Redirect to={redirect} />}
-      <NavbarItem text='HOME' redirectLocation='' setRedirect={setRedirect} />
-      <NavbarItem text='hi' redirectLocation='aaa' setRedirect={setRedirect} />
+      <NavbarItem text='Home' redirectLocation='' setRedirect={setRedirect} />
+      <NavbarItem text='Projects' redirectLocation='projects' setRedirect={setRedirect} />
     </div>
    )
 }

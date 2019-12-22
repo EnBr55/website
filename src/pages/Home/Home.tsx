@@ -6,7 +6,7 @@ const Home: React.FC = () => {
     <div className="Home">
       <h1>Placeholder</h1>
       <div className="Bio">
-        <h2>About me</h2>
+        <h2>About me &#128540;</h2>
         <p>
           Etiam ac hendrerit leo. Ut rhoncus enim pellentesque nisl vestibulum
           ullamcorper. Vivamus vel ante consequat libero lobortis pretium at at

@@ -1,14 +1,20 @@
 .navbar-item {
   height: 100%;
   width: 7em;
-  text-align: center;
-  vertical-align: center;
   float: left;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .navbar-item:hover {
   background-color: rgba(0, 0, 0, 0.2);
   cursor: pointer;
+}
+
+.navbar-item-content {
+  color: white; 
+  font-size: larger;
 }
 
 .noselect {

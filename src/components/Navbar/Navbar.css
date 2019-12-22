@@ -16,29 +16,9 @@ a:hover {
 
 .navbar {
   height: 4em;
-  background-color: pink;
   width: 100%;
-}
-
-.navbar-item {
-  height: 100%;
-  width: 7em;
-  text-align: center;
-  vertical-align: center;
-  float: left;
-}
-
-.navbar-item:hover {
-  background-color: rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-}
-
-.noselect {
-  -webkit-touch-callout: none; /* iOS Safari */
-  -webkit-user-select: none; /* Safari */
-  -khtml-user-select: none; /* Konqueror HTML */
-  -moz-user-select: none; /* Old versions of Firefox */
-  -ms-user-select: none; /* Internet Explorer/Edge */
-  user-select: none; /* Non-prefixed version, currently
-                                supported by Chrome, Opera and Firefox */
+  background-color: #a854a8;
+  box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.5);
+   background: rgb(227,204,204);
+background: linear-gradient(90deg, rgba(227,204,204,1) 0%, rgba(168,84,168,1) 51%);
 }
