@@ -17,8 +17,16 @@ a:hover {
 .navbar {
   height: 4em;
   width: 100%;
-  background-color: #a854a8;
   box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.5);
-   background: rgb(227,204,204);
-background: linear-gradient(90deg, rgba(227,204,204,1) 0%, rgba(168,84,168,1) 51%);
+  background: rgb(227,204,204);
+  background: linear-gradient(90deg, rgba(227,204,204,1) 0%, rgba(168,84,168,1) 51%);
+  overflow: hidden;
+}
+
+.logo-container {
+  width: 1em;
+  height: 100%;
+  text-align: center;
+  margin: auto auto;
+  cursor: pointer;
 }
