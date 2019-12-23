@@ -5,4 +5,14 @@
 .App {
   text-align: center;
   font-family: "manrope";
+  height: 20vh;
+}
+
+.header {
+  height: 7vh;
+}
+
+.content {
+  height: 93vh;
+  overflow-y: auto;
 }
