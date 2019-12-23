@@ -4,9 +4,9 @@ import './Home.css'
 const Home: React.FC = () => {
   return (
     <div className="Home">
-      <h1>Placeholder</h1>
+      <h1>Hey, I'm Ben.</h1>
       <div className="Bio">
-        <h2>About me &#128540;</h2>
+        <h2>About me &#127925;</h2>
         <p>
           Etiam ac hendrerit leo. Ut rhoncus enim pellentesque nisl vestibulum
           ullamcorper. Vivamus vel ante consequat libero lobortis pretium at at
@@ -18,7 +18,7 @@ const Home: React.FC = () => {
           pellentesque ipsum at purus ultricies, sit amet feugiat elit
           pellentesque. Donec justo eros, tempor nec semper vitae, fringilla
         </p>
-        <h2>Technical Skills</h2>
+        <h2>Technical Skills &#128295;</h2>
         <p>
           consectetur dolor. Donec hendrerit magna sodales placerat bibendum.
           Curabitur maximus est a arcu efficitur hendrerit. Fusce dolor erat,
@@ -29,7 +29,7 @@ const Home: React.FC = () => {
           auctor cursus nisl, ut consectetur nisl tempus a. Quisque interdum
           eleifend odio at maximus.
         </p>
-        <h2>Projects</h2>
+        <h2>Projects &#128161;</h2>
         <p>
           Vestibulum nec consectetur metus, at tristique nisi. Integer nec
           posuere lectus, ac dictum orci. Suspendisse tristique ipsum a egestas
@@ -40,7 +40,7 @@ const Home: React.FC = () => {
           ligula a lacus efficitur semper. Phasellus finibus rutrum augue
           accumsan sagittis.
         </p>
-        <h2>Contact</h2>
+        <h2>Contact &#128075;</h2>
         <p>
           Curabitur id purus sed magna molestie varius luctus id nibh. Proin
           sagittis, est eu congue condimentum, dui leo pretium sapien, vel
