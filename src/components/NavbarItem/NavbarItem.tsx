@@ -1,6 +1,5 @@
 import React from 'react'
 import './NavbarItem.css'
-import { BrowserRouter as Router, Redirect } from 'react-router-dom'
 
 type props = {
   text: string,

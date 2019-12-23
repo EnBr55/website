@@ -5,11 +5,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: rgba(0, 0, 0, 0.0);
+  transition: background-color 1s;
 }
 
 .navbar-item:hover {
-  background-color: rgba(0, 0, 0, 0.2);
   cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.5);
+  transition: background-color 1s;
 }
 
 .navbar-item-content {
