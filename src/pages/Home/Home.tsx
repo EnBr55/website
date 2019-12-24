@@ -10,16 +10,20 @@ const Home: React.FC = () => {
         <p>
           Thanks for checking out my website &#128513;
           <br />
-          I'm a student from Sydney, Australia, currently studying computer
-          science and physics at the Univeristy of Sydney. I'm very passionate
+          I'm a student from Sydney, Australia. I'm currently pursuing a
+          Bachelor of <i>Advanced Computing and Science</i> at the Univeristy of
+          Sydney, majoring in computer science and physics. I'm very passionate
           about the work I'm doing so feel free to shoot me a message about it!
-          <br />
-          <br />
+        </p>
+        <p>
           In my free time I enjoy programming, and both performing and composing
           music. I've been programming as a hobby for about five years now, and
           have played the piano since I was six years old. In recent years, I
           have been composing my own music, which may eventually be linked here.
         </p>
+          <p>
+            Recently, I have worked at <i>Envisage Software Solutions</i> as a junior software developer; primarily working with React to develop webapps.
+            </p>
         <h2>Technical Skills &#128295;</h2>
         <h3>Programming</h3>
         <h4>Preferred Languages</h4>
@@ -60,11 +64,9 @@ const Home: React.FC = () => {
           ) can be found on <a href="https://github.com/EnBr55">my GitHub</a>.
         </p>
         <h2>Contact &#128075;</h2>
+        <p>I'd love to get in touch :)</p>
         <p>
-          I'd love to get in touch :)
-        </p>
-        <p>
-          Email: <a href='mailto:ben@benbraham.com'>ben@benbraham.com</a>
+          Email: <a href="mailto:ben@benbraham.com">ben@benbraham.com</a>
           <br />
           Mobile: +61 481 394 909
         </p>
