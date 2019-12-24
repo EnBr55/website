@@ -31,9 +31,10 @@ a:hover {
 
 .logo-container {
   grid-column: 2;
-  height: 7vh;
+  height: 6.0vh;
+  margin-top: 0.3em;
   cursor: pointer;
-  animation: spin 10s linear infinite;
+  animation: spin 3s linear infinite;
   animation-play-state: paused;
 }
 
