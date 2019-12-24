@@ -40,35 +40,33 @@ const Home: React.FC = () => {
           </li>
         </ul>
         <p>
-        My preferred development environment is a system running Arch Linux. I
-        like to use vim as my primary editor when possible. Most of my general
-        configuration can be found{' '}
-        <a href="https://github.com/enbr55/dotfiles">here</a>.
+          My preferred development environment is a system running Arch Linux. I
+          like to use vim as my primary editor when possible. Most of my general
+          configuration can be found{' '}
+          <a href="https://github.com/enbr55/dotfiles">here</a>.
         </p>
         <h2>Projects &#128161;</h2>
         <p>
-          Vestibulum nec consectetur metus, at tristique nisi. Integer nec
-          posuere lectus, ac dictum orci. Suspendisse tristique ipsum a egestas
-          congue. Proin sagittis rhoncus dapibus. Curabitur aliquet erat eu
-          ullamcorper egestas. In vulputate bibendum massa elementum dapibus.
-          Mauris pellentesque dolor vel fringilla posuere. Vestibulum dolor
-          lorem, mollis at malesuada nec, vehicula in neque. Nam hendrerit
-          ligula a lacus efficitur semper. Phasellus finibus rutrum augue
-          accumsan sagittis.
+          I'm working on new projects all the time. I love to hear suggestions
+          on fun things to develop. Some of the stuff that I'm working on, or
+          have worked on, can be found in the <a href="/projects">projects</a>{' '}
+          section.
+        </p>
+        <p>
+          A lot of my work (including{' '}
+          <a href="https://github.com/EnBr55/website">
+            all the source code for this website
+          </a>
+          ) can be found on <a href="https://github.com/EnBr55">my GitHub</a>.
         </p>
         <h2>Contact &#128075;</h2>
         <p>
-          Curabitur id purus sed magna molestie varius luctus id nibh. Proin
-          sagittis, est eu congue condimentum, dui leo pretium sapien, vel
-          vestibulum libero mauris tempor mauris. Aliquam libero erat, pharetra
-          a rhoncus a, maximus eget ex. Duis non accumsan magna. Sed tincidunt,
-          felis fringilla facilisis egestas, dolor augue condimentum turpis, eu
-          convallis dui elit sodales lacus. Suspendisse et libero pharetra,
-          bibendum velit ac, sagittis velit. Pellentesque gravida placerat dui
-          vel bibendum. Proin auctor, massa sed tempus pretium, velit augue
-          faucibus dolor, eget cursus tortor lorem non nisi. Sed tristique ex
-          vel consectetur consequat. Ut tortor ante, lobortis quis orci ut,
-          sagittis interdum magna.
+          I'd love to get in touch :)
+        </p>
+        <p>
+          Email: <a href='mailto:ben@benbraham.com'>ben@benbraham.com</a>
+          <br />
+          Mobile: +61 481 394 909
         </p>
       </div>
     </div>
