@@ -9,3 +9,19 @@
   padding-right: 1em;
   text-align: start;
 }
+
+a {
+  color: orange;
+}
+
+a:link {
+  color: orange;
+}
+
+a:visited {
+  color: green;
+}
+
+a:hover {
+  color: purple;
+}

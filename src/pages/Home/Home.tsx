@@ -21,15 +21,29 @@ const Home: React.FC = () => {
           have been composing my own music, which may eventually be linked here.
         </p>
         <h2>Technical Skills &#128295;</h2>
+        <h3>Programming (section needs revising)</h3>
+        <h4>Preferred Languages</h4>
+        JavaScript, TypeScript, Python, Java, C, Bash, R, Lua
+        <br />
+        <br />
+        <h4>Frameworks / Tools</h4>
+        React, Processing, p5.js, Matter.js, Node.js, Firebase, Google Cloud
+        <br />
+        <br />
+        <h3>Multimedia</h3>
+        <ul>
+          <li>Image manipulation using GIMP and Adobe Photoshop</li>
+          <li>Video editing using Adobe After Effects, Sony Vegas Pro.</li>
+          <li>
+            Music production and audio design using FL Studio, composition using
+            Sibelius and Musescore
+          </li>
+        </ul>
         <p>
-          consectetur dolor. Donec hendrerit magna sodales placerat bibendum.
-          Curabitur maximus est a arcu efficitur hendrerit. Fusce dolor erat,
-          porttitor ac consequat vel, porttitor in lectus. Integer fringilla
-          risus a orci imperdiet, vel congue metus scelerisque. Ut justo ligula,
-          finibus id nulla sed, placerat lobortis nisl. Phasellus at aliquet
-          turpis, fermentum gravida libero. Quisque vel nibh tellus. Mauris
-          auctor cursus nisl, ut consectetur nisl tempus a. Quisque interdum
-          eleifend odio at maximus.
+        My preferred development environment is a system running Arch Linux. I
+        like to use vim as my primary editor when possible. Most of my general
+        configuration can be found{' '}
+        <a href="https://github.com/enbr55/dotfiles">here</a>.
         </p>
         <h2>Projects &#128161;</h2>
         <p>
