@@ -8,15 +8,17 @@ const Home: React.FC = () => {
       <div className="Bio">
         <h2>About me &#127925;</h2>
         <p>
-          Etiam ac hendrerit leo. Ut rhoncus enim pellentesque nisl vestibulum
-          ullamcorper. Vivamus vel ante consequat libero lobortis pretium at at
-          turpis. Maecenas ullamcorper nec velit et porta. Nullam ut orci orci.
-          Duis porta maximus enim eu efficitur. Ut in mi efficitur, luctus enim
-          accumsan, imperdiet libero. Maecenas ac quam quis ante pretium
-          aliquam. Phasellus bibendum, massa at aliquet vestibulum, enim libero
-          suscipit justo, quis pretium nunc augue sed metus. Vestibulum
-          pellentesque ipsum at purus ultricies, sit amet feugiat elit
-          pellentesque. Donec justo eros, tempor nec semper vitae, fringilla
+          Thanks for checking out my website &#128513;
+          <br />
+          I'm a student from Sydney, Australia, currently studying computer
+          science and physics at the Univeristy of Sydney. I'm very passionate
+          about the work I'm doing so feel free to shoot me a message about it!
+          <br />
+          <br />
+          In my free time I enjoy programming, and both performing and composing
+          music. I've been programming as a hobby for about five years now, and
+          have played the piano since I was six years old. In recent years, I
+          have been composing my own music, which may eventually be linked here.
         </p>
         <h2>Technical Skills &#128295;</h2>
         <p>
