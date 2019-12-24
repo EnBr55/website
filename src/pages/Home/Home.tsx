@@ -21,7 +21,7 @@ const Home: React.FC = () => {
           have been composing my own music, which may eventually be linked here.
         </p>
         <h2>Technical Skills &#128295;</h2>
-        <h3>Programming (section needs revising)</h3>
+        <h3>Programming</h3>
         <h4>Preferred Languages</h4>
         JavaScript, TypeScript, Python, Java, C, Bash, R, Lua
         <br />
