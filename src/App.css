@@ -9,10 +9,10 @@
 }
 
 .header {
-  height: 7vh;
+  height: 4em;
 }
 
 .content {
-  height: 93vh;
+  height: calc(100vh - 4em);
   overflow-y: auto;
 }
