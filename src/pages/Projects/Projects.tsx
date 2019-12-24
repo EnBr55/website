@@ -13,6 +13,14 @@ const Projects: React.FC = () => {
         </p>
       </div>
       <hr />
+      <div className='project'>
+        <h2>Another Project</h2>
+        <p>
+          Some information about the project. Perhaps an image or gif. A link to
+          the project is also here somewhere.
+        </p>
+      </div>
+      <hr />
     </div>
   )
 }

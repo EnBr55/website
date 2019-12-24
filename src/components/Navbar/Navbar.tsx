@@ -9,10 +9,14 @@ const Navbar: React.FC = () => {
   return (
     <div className='navbar'>
       {redirect !== undefined && <Redirect to={redirect} />}
-      <NavbarItem text='Home' redirectLocation='' setRedirect={setRedirect} />
-      <NavbarItem text='Projects' redirectLocation='projects' setRedirect={setRedirect} />
-        <div className='logo-container' onClick={() => setRedirect('')}>
+      <div className='buttons'>
+        <NavbarItem text='Home' redirectLocation='' setRedirect={setRedirect} />
+        <NavbarItem text='Projects' redirectLocation='projects' setRedirect={setRedirect} />
+      </div>
+      <div className='logo-container' onClick={() => setRedirect('')}>
         <img src={logo} alt='logo' height='100%'/>
+      </div>
+      <div className='right-side'>
       </div>
     </div>
    )
