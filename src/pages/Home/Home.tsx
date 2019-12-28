@@ -10,10 +10,10 @@ const Home: React.FC = () => {
         <p>
           Thanks for checking out my website &#128513;
           <br />
-          I'm a student from Sydney, Australia. I'm currently pursuing a
-          Bachelor of <i>Advanced Computing and Science</i> at the Univeristy of
+          I'm a student from Sydney, Australia. Currently, I am pursuing a
+          Bachelor of <i>Advanced Computing and Science</i> at the University of
           Sydney, majoring in computer science and physics. I'm very passionate
-          about the work I'm doing so feel free to shoot me a message about it!
+          about the work I'm doing and would love to get in contact about it.
         </p>
         <p>
           In my free time I enjoy programming, and both performing and composing
@@ -27,20 +27,20 @@ const Home: React.FC = () => {
         <h2>Technical Skills &#128295;</h2>
         <h3>Programming</h3>
         <h4>Preferred Languages</h4>
-        JavaScript, TypeScript, Python, Java, C, Bash, R, Lua
+        JavaScript, TypeScript, Python, Java, C, Bash, R, Lua.
         <br />
         <br />
         <h4>Frameworks / Tools</h4>
-        React, Processing, p5.js, Matter.js, Node.js, Firebase, Google Cloud
+        React, Processing, p5.js, Matter.js, Node.js, Firebase, Google Cloud.
         <br />
         <br />
         <h3>Multimedia</h3>
         <ul>
-          <li>Image manipulation using GIMP and Adobe Photoshop</li>
+          <li>Image manipulation using GIMP and Adobe Photoshop.</li>
           <li>Video editing using Adobe After Effects, Sony Vegas Pro.</li>
           <li>
             Music production and audio design using FL Studio, composition using
-            Sibelius and Musescore
+            Sibelius and Musescore.
           </li>
         </ul>
         <p>
