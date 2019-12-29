@@ -13,6 +13,7 @@
   grid-column: 1;
   float: left;
   margin-right: auto;
+  display: flex;
 }
 
 .logo-container {
@@ -27,7 +28,18 @@
 .right-side {
   grid-column: 3;
   float: right;
-  margin-left: auto;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.theme-switcher {
+  height: 100%;
+  font-size: x-large;
+  margin: 0 0.2em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .logo-container:hover {

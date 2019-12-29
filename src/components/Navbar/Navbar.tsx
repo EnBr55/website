@@ -7,6 +7,7 @@ import logo from '../../bb.png'
 const Navbar: React.FC = () => {
   const [redirect, setRedirect] = React.useState<string | undefined>(undefined)
   const [width, setWidth] = React.useState(window.innerWidth)
+  const [darkTheme, setDarkTheme] = React.useState(true)
   React.useEffect(() => {
     const handleResize = () => {
       setWidth(window.innerWidth)
@@ -29,6 +30,9 @@ const Navbar: React.FC = () => {
         <img src={logo} alt='logo' height='100%'/>
       </div>
       <div className='right-side'>
+        <div className='theme-switcher' onClick={() => setDarkTheme(!darkTheme)}>
+          {darkTheme ? <>&#128262;</> : <>&#127765;</>}
+        </div>
         { width <= 600 && <NavbarItem text='Projects' redirectLocation='projects' setRedirect={setRedirect} /> }
       </div>
     </div>
