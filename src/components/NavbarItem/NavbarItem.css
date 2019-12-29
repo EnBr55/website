@@ -1,12 +1,12 @@
 .navbar-item {
   height: 100%;
   width: 8em;
-  float: left;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.0);
   transition: background-color 1s;
+  float: inherit;
 }
 
 .navbar-item:hover {

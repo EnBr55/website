@@ -9,8 +9,10 @@
   grid-template-columns: 45vw 10vw 45vw;
 }
 
-.buttons {
+.left-side {
   grid-column: 1;
+  float: left;
+  margin-right: auto;
 }
 
 .logo-container {
@@ -24,6 +26,8 @@
 
 .right-side {
   grid-column: 3;
+  float: right;
+  margin-left: auto;
 }
 
 .logo-container:hover {

@@ -3,8 +3,8 @@ import './NavbarItem.css'
 
 type props = {
   text: string,
-  redirectLocation: string
-  setRedirect(location: string): void
+  redirectLocation: string,
+  setRedirect(location: string): void,
 }
 
 const NavbarItem: React.FC<props> = ({text, redirectLocation, setRedirect}) => {
