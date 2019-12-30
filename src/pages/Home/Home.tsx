@@ -1,12 +1,17 @@
 import React from 'react'
 import './Home.css'
+import { ThemeContext } from '../../contexts/ThemeContext'
 
 const Home: React.FC = () => {
+  let themeThing = React.useContext(ThemeContext)
   return (
     <div className="Home">
       <h1>Hey, I'm Ben.</h1>
       <div className="Bio">
         <h2>About me &#127925;</h2>
+          <ThemeContext.Consumer>
+            {context => (<h1 onClick={() => {themeThing.toggleTheme();themeThing.hi = false;console.log(themeThing)}}>aaaaahh</h1>) }
+          </ThemeContext.Consumer>
         <p>
           Thanks for checking out my website &#128513;
           <br />
@@ -21,9 +26,11 @@ const Home: React.FC = () => {
           have played the piano since I was six years old. In recent years, I
           have been composing my own music, which may eventually be linked here.
         </p>
-          <p>
-            Recently, I have worked at <i>Envisage Software Solutions</i> as a junior software developer; primarily working with React to develop webapps.
-            </p>
+        <p>
+          Recently, I have worked at <i>Envisage Software Solutions</i> as a
+          junior software developer; primarily working with React to develop
+          webapps.
+        </p>
         <h2>Technical Skills &#128295;</h2>
         <h3>Programming</h3>
         <h4>Preferred Languages</h4>
