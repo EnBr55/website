@@ -9,7 +9,7 @@ type props = {
 
 const NavbarItem: React.FC<props> = ({text, redirectLocation, setRedirect}) => {
   return (
-    <div className='navbar-item noselect' onClick={() => setRedirect(redirectLocation)}>
+    <div className='navbar-item' onClick={() => setRedirect(redirectLocation)}>
       <div className='navbar-item-content'>
         {text}
       </div>
