@@ -10,3 +10,5 @@ const Snakes: React.FC = () => {
     </div>
   )
 }
+
+export default Snakes

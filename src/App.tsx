@@ -3,6 +3,7 @@ import './App.css'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Home from './pages/Home/Home'
 import Projects from './pages/Projects/Projects'
+import Snakes from './pages/Snakes/Snakes'
 import Navbar from './components/Navbar/Navbar'
 import {ThemeContext, themes} from './contexts/ThemeContext' 
 
@@ -41,6 +42,9 @@ const App: React.FC = () => {
               </Route>
               <Route path='/projects'>
                 <Projects />
+              </Route>
+              <Route path='/snakes'>
+                <Snakes />
               </Route>
               <Route>
                 <div>
