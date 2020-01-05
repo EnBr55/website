@@ -10,10 +10,10 @@ const Home: React.FC = () => {
       <div className="Bio">
         <h2>About me &#127925;</h2>
           <ThemeContext.Consumer>
-            {context => (<h1 onClick={() => {themeThing.toggleTheme();themeThing.hi = false;console.log(themeThing)}}>aaaaahh</h1>) }
+            {context => (<h1 onClick={() => {themeThing.toggleTheme();console.log(themeThing)}}>aaaaahh</h1>) }
           </ThemeContext.Consumer>
         <p>
-          Thanks for checking out my website &#128513;
+          Thanks for checking out my website! 
           <br />
           I'm a student from Sydney, Australia. Currently, I am pursuing a
           Bachelor of <i>Advanced Computing and Science</i> at the University of

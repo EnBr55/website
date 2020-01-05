@@ -7,27 +7,25 @@ import Navbar from './components/Navbar/Navbar'
 import {ThemeContext, themes} from './contexts/ThemeContext' 
 
 const App: React.FC = () => {
-  const theme = {
+  const [themeState, setThemeState] = React.useState({
     theme: themes.dark,
-    hi: true,
     toggleTheme: () => {
-      console.log(themeState.hi)
-      setThemeState({
+      // we use the second form of setState (passing a function)
+      //   so as to force the state updated to be received synchronously
+      setThemeState(themeState => ({
         ...themeState,
         theme: themeState.theme === themes.light ? themes.dark : themes.light,
-        hi: !themeState.hi
-      })
+      }))
     }
-  }
-  const [themeState, setThemeState] = React.useState(theme)
+  })
   return (
     <div className='App'>
-      <ThemeContext.Provider value={theme}>
+      <ThemeContext.Provider value={themeState}>
         <Router>
           <div className='header'>
             <Navbar />
           </div>
-          <div className='content'>
+            <div className='content' onClick={()=>{}}>
             <Switch>
               <Route exact path='/'>
                 <Home />
