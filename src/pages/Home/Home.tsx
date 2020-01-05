@@ -1,9 +1,6 @@
 import React from 'react'
 import './Home.css'
-import { ThemeContext } from '../../contexts/ThemeContext'
-
 const Home: React.FC = () => {
-  let theme = React.useContext(ThemeContext).theme
   return (
     <div className="Home">
       <h1>Hey, I'm Ben.</h1>

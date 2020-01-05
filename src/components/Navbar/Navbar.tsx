@@ -1,7 +1,7 @@
 import React from 'react'
 import './Navbar.css'
 import NavbarItem from '../NavbarItem/NavbarItem'
-import { BrowserRouter as Router, Redirect } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import logo from '../../bb.png'
 import { ThemeContext, themes } from '../../contexts/ThemeContext'
 

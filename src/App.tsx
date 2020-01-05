@@ -21,7 +21,6 @@ const App: React.FC = () => {
         ...themeState,
         theme: themeState.theme === themes.light ? themes.dark : themes.light,
       }))
-      console.log(window.localStorage)
     }
   })
   return (
