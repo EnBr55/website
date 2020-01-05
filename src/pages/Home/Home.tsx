@@ -3,15 +3,12 @@ import './Home.css'
 import { ThemeContext } from '../../contexts/ThemeContext'
 
 const Home: React.FC = () => {
-  let themeThing = React.useContext(ThemeContext)
+  let theme = React.useContext(ThemeContext).theme
   return (
     <div className="Home">
       <h1>Hey, I'm Ben.</h1>
       <div className="Bio">
         <h2>About me &#127925;</h2>
-          <ThemeContext.Consumer>
-            {context => (<h1 onClick={() => {themeThing.toggleTheme();console.log(themeThing)}}>aaaaahh</h1>) }
-          </ThemeContext.Consumer>
         <p>
           Thanks for checking out my website! 
           <br />
