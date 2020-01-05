@@ -21,7 +21,9 @@ const Navbar: React.FC = () => {
     }
   })
   return (
-    <div className='navbar noselect' style={{background: theme.theme.navbarBackground}}>
+    <div className='navbar noselect' style={{
+      background: theme.theme.navbarBackground,
+    }}>
       {redirect !== undefined && <Redirect to={redirect} />}
       <div className='left-side'>
         <NavbarItem text='Home'  redirectLocation='' setRedirect={setRedirect} />

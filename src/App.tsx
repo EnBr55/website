@@ -32,7 +32,8 @@ const App: React.FC = () => {
           </div>
             <div className='content' style={{
               backgroundColor: themeState.theme.background,
-              color: themeState.theme.color
+                color: themeState.theme.color,
+                transition: 'all 0.5s ease'
             }}>
             <Switch>
               <Route exact path='/'>
