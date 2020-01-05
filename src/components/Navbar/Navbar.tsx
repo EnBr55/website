@@ -28,10 +28,10 @@ const Navbar: React.FC = () => {
         { width > 600 && <NavbarItem text='Projects' redirectLocation='projects' setRedirect={setRedirect} /> }
       </div>
       <div className='logo-container' onClick={() => setRedirect('')}>
-        <img src={logo} alt='logo' height='100%'/>
+        <img src={logo} alt='logo' role='button' height='100%'/>
       </div>
       <div className='right-side'>
-        <div className='theme-switcher' onClick={() => {theme.toggleTheme();console.log(theme.theme)}}>
+        <div className='theme-switcher' role='button' onClick={() => theme.toggleTheme()}>
           {theme.theme === themes.light ? <>&#128262;</> : <>&#127765;</>}
         </div>
         { width <= 600 && <NavbarItem text='Projects' redirectLocation='projects' setRedirect={setRedirect} /> }
