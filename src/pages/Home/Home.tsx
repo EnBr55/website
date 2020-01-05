@@ -51,7 +51,7 @@ const Home: React.FC = () => {
         </p>
         <h2>Projects &#128161;</h2>
         <p>
-          I'm working on new projects all the time. I love to hear suggestions
+          I'm working on new projects all the time. I always appreciate suggestions
           on fun things to develop. Some of the stuff that I'm working on, or
           have worked on, can be found in the <a href="/projects">projects</a>{' '}
           section.

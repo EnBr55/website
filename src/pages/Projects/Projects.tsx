@@ -8,7 +8,7 @@ const Projects: React.FC = () => {
       <div className='project'>
         <h2>Some Project</h2>
         <p>
-          Some information about the project. Perhaps an image or gif. A link to
+          Some information about the project. Probably put an image or a gif here. A link to
           the project is also here somewhere.
         </p>
       </div>
@@ -16,7 +16,7 @@ const Projects: React.FC = () => {
       <div className='project'>
         <h2>Another Project</h2>
         <p>
-          Some information about the project. Perhaps an image or gif. A link to
+          Some information about the project. Probably put an image or a gif here. A link to
           the project is also here somewhere.
         </p>
       </div>
