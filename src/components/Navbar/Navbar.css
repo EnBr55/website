@@ -1,11 +1,11 @@
 .navbar {
   height: 100%;
   width: 100%;
-  box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.5);
-  background: rgb(227,204,204);
-  background: linear-gradient(270deg, rgba(227,204,204,1) 0%, rgba(168,84,168,1) 51%);
   overflow: hidden;
   display: grid;
+  position: relative;
+  z-index: 10;
+  box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.5);
   grid-template-columns: 45vw 10vw 45vw;
 }
 
@@ -13,6 +13,7 @@
   grid-column: 1;
   float: left;
   margin-right: auto;
+  display: flex;
 }
 
 .logo-container {
@@ -27,11 +28,32 @@
 .right-side {
   grid-column: 3;
   float: right;
-  margin-left: auto;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.theme-switcher {
+  height: 100%;
+  font-size: x-large;
+  margin: 0 0.2em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .logo-container:hover {
   animation-play-state: running;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+                                supported by Chrome, Opera and Firefox */
 }
 
 @keyframes spin {
