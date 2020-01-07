@@ -15,38 +15,42 @@ export default class Snake {
     this.time = 0
     this.clock = 0
 
-    this.segments = [{ x: this.pos.x, y: this.pos.y, width: this.width, height: this.height }]
-    
-    this.numTailSegments = 4
-    this.tailSegmentOffset = Math.floor(60/this.numTailSegments)
+    this.segments = [
+      { x: this.pos.x, y: this.pos.y, width: this.width, height: this.height },
+    ]
 
-    for (let i = 1; i < this.numTailSegments+1; i++) {
-      this.segments.push({ 
-        x: this.history[(this.clock + this.tailSegmentOffset*i) % 60].x,
-        y: this.history[(this.clock + this.tailSegmentOffset*i) % 60].y,
+    this.numTailSegments = 4
+    // Number of divisions of the framerate to account for
+    this.tailSegmentOffset = Math.floor(60 / (this.numTailSegments + 1))
+
+    for (let i = 1; i < this.numTailSegments + 1; i++) {
+      this.segments.push({
+        x: this.history[(this.clock + this.tailSegmentOffset * i + 60) % 60].x,
+        y: this.history[(this.clock + this.tailSegmentOffset * i + 60) % 60].y,
         width: this.width - this.width * 0.1 * i,
-        height: this.height - this.width * 0.1 * i
+        height: this.height - this.width * 0.1 * i,
       })
     }
   }
-  
 
   update() {
     if (this.alive) {
-      this.clock++ 
+      this.clock++
 
       this.history[this.clock % 60] = { x: this.pos.x, y: this.pos.y }
 
       this.segments[0].x = this.pos.x
       this.segments[0].y = this.pos.y
-      for (let i = 1; i < this.numTailSegments+1; i++) {
-        this.segments[i].x = this.history[(this.clock + this.tailSegmentOffset*i) % 60].x
-        this.segments[i].y = this.history[(this.clock + this.tailSegmentOffset*i) % 60].y
+      for (let i = 1; i < this.numTailSegments + 1; i++) {
+        this.segments[i].x = this.history[
+          (this.clock - this.tailSegmentOffset * i + 60) % 60
+        ].x
+        this.segments[i].y = this.history[
+          (this.clock - this.tailSegmentOffset * i + 60) % 60
+        ].y
       }
     }
-    if (this.clock%60===0) {console.log(this.history)}
     //console.log(Math.floor(this.clock / 60))
-
   }
 
   draw(p5) {
