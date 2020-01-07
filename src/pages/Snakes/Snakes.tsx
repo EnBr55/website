@@ -1,12 +1,12 @@
 import React from 'react'
 import './Snakes.css'
 import P5Wrapper from 'react-p5-wrapper'
-import { SnakeSketch } from './SnakeSketch'
+import { SnakeSim } from './SnakeSim'
 
 const Snakes: React.FC = () => {
   return (
     <div className='snakes'>
-      <P5Wrapper sketch={SnakeSketch} />
+      <P5Wrapper sketch={SnakeSim} />
     </div>
   )
 }
