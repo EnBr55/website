@@ -122,8 +122,10 @@ export default class Snake {
       inputs.push([this.hunger.current])
       inputs.push([this.hunger.max])
       let outputs = this.brain.feedforward(inputs)
+      
+      if (outputs[0]) { this.dir += outputs[0] * 0.12 } 
+      if (outputs[1]) { this.speed = 2 + outputs[1] * 2 }
 
-      if (this.clock%120===0){console.log(outputs)}
       this.vel.x = this.speed * Math.cos(this.dir)
       this.vel.y = this.speed * Math.sin(this.dir)
 
