@@ -18,6 +18,21 @@ export default class Snake {
     this.time = 0
     this.clock = 0
 
+    this.numFeelers = 4
+    this.feelerLength = 200
+    this.feelers = []
+    for (let i = 1; i < this.numFeelers + 1; i++) {
+      // Divide a semicircle in n+1 equal section with n lines (feelers)
+      // Assume angle of 0 goes through the centre of the semicircle such that -PI/2 is the start
+      let angle = (-Math.PI / 2) + (i * Math.PI / (this.numFeelers + 1))
+      this.feelers.push({
+        x1: this.pos.x + this.width / 2,
+        x2: this.pos.x + this.width / 2 + this.feelerLength * Math.cos(this.dir - angle),
+        y1: this.pos.y + this.height / 2,
+        y2: this.pos.y + this.height / 2 + this.feelerLength * Math.sin(this.dir - angle)
+      })
+    }
+
     this.segments = [
       { x: this.pos.x, y: this.pos.y, width: this.width, height: this.height },
     ]
@@ -37,6 +52,7 @@ export default class Snake {
 
   update(windowDimensions) {
     if (this.alive) {
+      this.speed = Math.random() * 5
       this.clock++
 
       // Update position
@@ -48,7 +64,7 @@ export default class Snake {
         this.vel.x = 0.1
         this.facing += 0.1
       }
-      if (this.pos.x >= windowDimensions.width) {
+      if (this.pos.x >= windowDimensions.width - this.width) {
         this.vel.x = -0.1
         this.facing += 0.1
       }
@@ -56,7 +72,7 @@ export default class Snake {
         this.vel.y = 0.1
         this.facing += 0.1
       }
-      if (this.pos.y >= windowDimensions.width) {
+      if (this.pos.y >= windowDimensions.height - this.height) {
         this.vel.y = -0.1
         this.facing += 0.1
       }
@@ -100,5 +116,8 @@ export default class Snake {
       this.pos.x + this.width / 2 + this.width * Math.cos(this.dir),
       this.pos.y + this.height / 2 + this.height * Math.sin(this.dir),
     )
+    for (let feeler of this.feelers) {
+      p5.line(feeler.x1, feeler.y1, feeler.x2, feeler.y2)
+    }
   }
 }

@@ -5,7 +5,7 @@ import Snake from './Snake'
 export const SnakeSim = (p5) => {
 
   // WORLD VARIABLES
-  const snakes = [new Snake(50, 50)]
+  const snakes = [new Snake(300, 300)]
   let generation = 0
 
   // SIMULATION VARIABLES
@@ -30,7 +30,7 @@ export const SnakeSim = (p5) => {
     for (let snake of snakes) {
       snake.draw(p5)
       snake.update(windowDimensions)
-      snake.dir += 0.01
+      snake.dir += Math.random() * 0.05 - 0.025
       // snake.update()
       // if (true) {
       //   snake.draw()
