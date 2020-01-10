@@ -1,3 +1,5 @@
+import { NeuralNet, matrixConstructor, mutate, crossOver } from './NeuralNet'
+
 export default class Snake {
   constructor(x, y, dna) {
     this.dna = dna
@@ -18,7 +20,7 @@ export default class Snake {
     this.time = 0
     this.clock = 0
 
-    this.numFeelers = 20
+    this.numFeelers = 5
     this.feelerLength = 300
     this.feelers = []
     for (let i = 1; i < this.numFeelers + 1; i++) {
@@ -50,6 +52,10 @@ export default class Snake {
     }
   }
 
+  die() {
+    this.alive = false
+  }
+
   updateFeelers() {
     for (let i = 1; i < this.numFeelers + 1; i++) {
       // Divide a semicircle in n+1 equal section with n lines (feelers)
@@ -64,32 +70,56 @@ export default class Snake {
     }
   }
 
-  update(windowDimensions) {
+  toFeelerDistance(obj1, obj2) {
+    let dist = Math.sqrt((obj2.x - obj1.x) ** 2 + (obj2.y - obj1.y) ** 2)
+    return dist >= this.feelerLength ? 1 : dist / this.feelerLength
+  }
+  
+  checkFeelers(group, check, response) {
+    this.color[3] = 80
+    for (let feeler of this.feelers) {
+      // initial values (if not colliding)
+      feeler.value = 0
+      feeler.distance = 1
+
+      for (let body of group) {
+        if (body !== this) {
+          if (check(feeler, body)) {
+            feeler.value = response
+            feeler.distance = this.toFeelerDistance(feeler.x1, body.pos.x)
+            this.color[3] = 200
+          }
+        }
+      }
+    }
+  }
+  
+  getFitness() {
+    return this.clock
+  }
+
+  update(windowDimensions, world) {
     if (this.alive) {
-      this.updateFeelers()
       this.speed = Math.random() * 5
       this.clock++
 
       // Update position
+      this.updateFeelers()
       this.vel.x = this.speed * Math.cos(this.dir)
       this.vel.y = this.speed * Math.sin(this.dir)
 
       // Check walls
       if (this.pos.x <= 0) {
         this.vel.x = 0.1
-        this.facing += 0.1
       }
       if (this.pos.x >= windowDimensions.width - this.width) {
         this.vel.x = -0.1
-        this.facing += 0.1
       }
       if (this.pos.y <= 0) {
         this.vel.y = 0.1
-        this.facing += 0.1
       }
       if (this.pos.y >= windowDimensions.height - this.height) {
         this.vel.y = -0.1
-        this.facing += 0.1
       }
 
       this.pos.x += this.vel.x
@@ -112,8 +142,18 @@ export default class Snake {
       if (this.hunger.current > this.hunger.max) {
         this.alive = false
       }
-    } else {
-      this.color = [255 * 0.803, 255 * 0.03, 255 * 0.04, 80]
+
+      // Collisions
+      for (let obj of world) {
+        // Update feelers
+        this.checkFeelers(obj.target, obj.feelerCheck, obj.response)
+        // Collisions involving head
+        for (let body of obj.target) {
+          if (body !== this && obj.headCheck(this.segments[0], body)) { 
+            obj.call(this, body)
+          }
+        }
+      }
     }
   }
 
@@ -130,6 +170,7 @@ export default class Snake {
       this.pos.x + this.width / 2 + this.width * Math.cos(this.dir),
       this.pos.y + this.height / 2 + this.height * Math.sin(this.dir),
     )
+    p5.stroke('green')
     for (let feeler of this.feelers) {
       p5.line(feeler.x1, feeler.y1, feeler.x2, feeler.y2)
     }

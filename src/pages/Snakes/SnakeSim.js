@@ -1,4 +1,5 @@
 import { NeuralNet, matrixConstructor, mutate, crossOver } from './NeuralNet'
+import { lineLine, lineBox, colliding, lineSnake, boxSnake } from './SimOperations'
 import math from 'mathjs'
 import Snake from './Snake'
 
@@ -6,7 +7,7 @@ export const SnakeSim = (p5) => {
 
   // WORLD VARIABLES
   const snakes = []
-  for (let i = 0; i < 3; i++) {snakes.push(new Snake(Math.random()*p5.windowWidth - 100, Math.random()*p5.windowHeight - 100))}
+  for (let i = 0; i < 3; i++) {snakes.push(new Snake(Math.random()*300, Math.random()*300))}
   let generation = 0
 
   // SIMULATION VARIABLES
@@ -35,8 +36,12 @@ export const SnakeSim = (p5) => {
     )
     for (let snake of snakes) {
       snake.draw(p5)
-      snake.update(windowDimensions)
-      snake.dir += Math.random() * 0.05 - 0.025
+      snake.update(windowDimensions, [
+        { target: snakes, feelerCheck: lineSnake, headCheck: boxSnake, response: 1, call: (caller, other) => {
+          if (other.alive) { caller.die() }
+        }
+        }
+      ])
       // snake.update()
       // if (true) {
       //   snake.draw()
