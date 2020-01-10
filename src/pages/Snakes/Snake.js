@@ -2,8 +2,6 @@ import { NeuralNet, matrixConstructor, mutate, crossOver } from './NeuralNet'
 
 export default class Snake {
   constructor(x, y, dna) {
-    this.dna = dna
-    this.color = [0, 200, 50, 100]
 
     this.alive = true
     this.hunger = { max: 30, min: 0, current: 0 }
@@ -31,7 +29,9 @@ export default class Snake {
         x1: this.pos.x + this.width / 2,
         x2: this.pos.x + this.width / 2 + this.feelerLength * Math.cos(this.dir - angle),
         y1: this.pos.y + this.height / 2,
-        y2: this.pos.y + this.height / 2 + this.feelerLength * Math.sin(this.dir - angle)
+        y2: this.pos.y + this.height / 2 + this.feelerLength * Math.sin(this.dir - angle),
+        distance: 1,
+        value: 0
       })
     }
 
@@ -50,6 +50,13 @@ export default class Snake {
         height: this.height - this.width * 0.1 * i,
       })
     }
+
+    this.dna = dna
+    if (!this.dna) {
+      this.dna = matrixConstructor(this.numFeelers * 2 + 2, 16, 16, 2, 4)
+    }
+    this.color = [0, 200, 50, 100]
+    this.brain = new NeuralNet(this.dna)
   }
 
   die() {
@@ -62,6 +69,7 @@ export default class Snake {
       // Assume angle of 0 goes through the centre of the semicircle such that -PI/2 is the start
       let angle = (-Math.PI / 2) + (i * Math.PI / (this.numFeelers + 1))
       this.feelers[i-1] = {
+        ...this.feelers[i-1],
         x1: this.pos.x + this.width / 2,
         x2: this.pos.x + this.width / 2 + this.feelerLength * Math.cos(this.dir - angle),
         y1: this.pos.y + this.height / 2,
@@ -105,6 +113,17 @@ export default class Snake {
 
       // Update position
       this.updateFeelers()
+
+      let inputs = []
+      for (let feeler of this.feelers) { 
+        inputs.push([feeler.distance])
+        inputs.push([feeler.value])
+      }
+      inputs.push([this.hunger.current])
+      inputs.push([this.hunger.max])
+      let outputs = this.brain.feedforward(inputs)
+
+      if (this.clock%120===0){console.log(outputs)}
       this.vel.x = this.speed * Math.cos(this.dir)
       this.vel.y = this.speed * Math.sin(this.dir)
 
@@ -139,6 +158,7 @@ export default class Snake {
       }
 
       // Update hunger
+      if (this.clock % 60 === 0) { this.hunger.current++ }
       if (this.hunger.current > this.hunger.max) {
         this.alive = false
       }

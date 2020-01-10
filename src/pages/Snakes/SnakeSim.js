@@ -7,7 +7,13 @@ export const SnakeSim = (p5) => {
 
   // WORLD VARIABLES
   const snakes = []
-  for (let i = 0; i < 3; i++) {snakes.push(new Snake(Math.random()*300, Math.random()*300))}
+  for (let i = 0; i < 3; i++) {
+    snakes.push(new Snake(
+      Math.random()*300,
+      Math.random()*300,
+      undefined
+    ))
+  }
   let generation = 0
 
   // SIMULATION VARIABLES
