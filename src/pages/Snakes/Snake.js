@@ -18,8 +18,8 @@ export default class Snake {
     this.time = 0
     this.clock = 0
 
-    this.numFeelers = 4
-    this.feelerLength = 200
+    this.numFeelers = 20
+    this.feelerLength = 300
     this.feelers = []
     for (let i = 1; i < this.numFeelers + 1; i++) {
       // Divide a semicircle in n+1 equal section with n lines (feelers)
@@ -50,8 +50,23 @@ export default class Snake {
     }
   }
 
+  updateFeelers() {
+    for (let i = 1; i < this.numFeelers + 1; i++) {
+      // Divide a semicircle in n+1 equal section with n lines (feelers)
+      // Assume angle of 0 goes through the centre of the semicircle such that -PI/2 is the start
+      let angle = (-Math.PI / 2) + (i * Math.PI / (this.numFeelers + 1))
+      this.feelers[i-1] = {
+        x1: this.pos.x + this.width / 2,
+        x2: this.pos.x + this.width / 2 + this.feelerLength * Math.cos(this.dir - angle),
+        y1: this.pos.y + this.height / 2,
+        y2: this.pos.y + this.height / 2 + this.feelerLength * Math.sin(this.dir - angle)
+      }
+    }
+  }
+
   update(windowDimensions) {
     if (this.alive) {
+      this.updateFeelers()
       this.speed = Math.random() * 5
       this.clock++
 
@@ -100,7 +115,6 @@ export default class Snake {
     } else {
       this.color = [255 * 0.803, 255 * 0.03, 255 * 0.04, 80]
     }
-    //console.log(Math.floor(this.clock / 60))
   }
 
   draw(p5) {

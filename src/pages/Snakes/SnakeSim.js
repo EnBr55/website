@@ -5,7 +5,8 @@ import Snake from './Snake'
 export const SnakeSim = (p5) => {
 
   // WORLD VARIABLES
-  const snakes = [new Snake(300, 300)]
+  const snakes = []
+  for (let i = 0; i < 3; i++) {snakes.push(new Snake(Math.random()*p5.windowWidth - 100, Math.random()*p5.windowHeight - 100))}
   let generation = 0
 
   // SIMULATION VARIABLES
@@ -13,6 +14,11 @@ export const SnakeSim = (p5) => {
   let showEyes = false
   let mutationRate = 0.3
   let windowDimensions = {width: p5.windowWidth / 1.3, height: p5.windowHeight / 1.3}
+
+  p5.windowResized = () => {
+    p5.resizeCanvas(p5.windowWidth/1.3, p5.windowHeight/1.3)
+    windowDimensions = {width: p5.windowWidth / 1.3, height: p5.windowHeight / 1.3}
+  }
 
   p5.setup = () => {
     p5.createCanvas(windowDimensions.width, windowDimensions.height)
