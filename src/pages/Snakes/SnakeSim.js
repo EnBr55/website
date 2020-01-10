@@ -12,9 +12,10 @@ export const SnakeSim = (p5) => {
   let simulationSpeed = 1
   let showEyes = false
   let mutationRate = 0.3
+  let windowDimensions = {width: p5.windowWidth / 1.3, height: p5.windowHeight / 1.3}
 
   p5.setup = () => {
-    p5.createCanvas(p5.windowWidth / 1.3, p5.windowHeight / 1.3)
+    p5.createCanvas(windowDimensions.width, windowDimensions.height)
     p5.frameRate(60)
   }
 
@@ -28,9 +29,8 @@ export const SnakeSim = (p5) => {
     )
     for (let snake of snakes) {
       snake.draw(p5)
-      snake.update()
-      snake.pos.x += 2*Math.random()
-      snake.pos.y += 2*Math.random()
+      snake.update(windowDimensions)
+      snake.dir += 0.01
       // snake.update()
       // if (true) {
       //   snake.draw()
