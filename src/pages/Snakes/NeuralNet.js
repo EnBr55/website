@@ -5,14 +5,6 @@ let toMatrix = (array) => {
   return math.matrix(array)
 }
 
-// let toArray = (matrix) => {
-//     return matrix.valueOf()[0]
-// }
-
-let sigmoid = (x) => {
-  return 1 / (1 + Math.exp(-x))
-}
-
 let matrixConstructor = (
   input_nodes,
   hidden_nodes1,
@@ -66,7 +58,7 @@ let mutate = (dna, amount) => {
     for (let k = 0; k < dna[z].length; k++) {
       newDNA[z][k] = []
       for (let j = 0; j < dna[z][k].length; j++) {
-        newDNA[z][k][j] = dna[z][k][j] + Math.random() * amount - amount / 2
+        newDNA[z][k][j] = Math.min(Math.max(dna[z][k][j] + Math.random() * amount - amount / 2, 0), 1)
       }
     }
   }

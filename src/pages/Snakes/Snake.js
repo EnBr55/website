@@ -18,11 +18,13 @@ export default class Snake {
     this.time = 0
     this.clock = 0
     this.deathTimer = 0
+    this.fitness = 0
+
     this.shouldUpdate = true
     this.showEyes = true
 
-    this.numFeelers = 3
-    this.feelerLength = 300
+    this.numFeelers = 7
+    this.feelerLength = 400
     this.feelers = []
     for (let i = 1; i < this.numFeelers + 1; i++) {
       // Divide a semicircle in n+1 equal section with n lines (feelers)
@@ -65,7 +67,7 @@ export default class Snake {
     this.dna = dna
     if (!this.dna) {
       // [input nodes, hidden layer 1, hidden layer 2, output nodes, genes]
-      this.dna = matrixConstructor(this.numFeelers * 2 + 1, 16, 16, 2, 4)
+      this.dna = matrixConstructor(this.numFeelers * 2 + 1, 32, 32, 2, 4)
     }
     this.genes = this.dna[6][0]
     this.color = [
@@ -83,6 +85,7 @@ export default class Snake {
 
   feed(amount) {
     this.hunger.current = Math.max(this.hunger.min, this.hunger.current - amount)
+    this.fitness += 3 * amount * 60
   }
 
   updateFeelers() {
@@ -118,7 +121,7 @@ export default class Snake {
           if (check(feeler, body)) {
             let dist = this.toFeelerDistance(feeler, body)
             if (dist < feeler.distance) {
-              feeler.dist = dist
+              feeler.distance = dist
               feeler.value = response
             }
             this.color[3] = 200
@@ -129,7 +132,7 @@ export default class Snake {
   }
 
   getFitness() {
-    return this.clock
+    return this.clock + this.fitness
   }
 
   getDna() {
@@ -152,11 +155,14 @@ export default class Snake {
       inputs.push([this.hunger.current / this.hunger.max])
       let outputs = this.brain.feedforward(inputs)
 
-      if (outputs[0]) {
-        this.dir += outputs[0] * 0.09
-      }
       if (outputs[1]) {
         this.speed = 4 + outputs[1] * 2
+      }
+
+      if (this.feelers.filter(t => t.distance === 1).length === 7) {
+        this.dir += Math.random() * 0.25 - 0.125
+      } else if (outputs[0]) {
+        this.dir += outputs[0] * 0.09
       }
 
       this.vel.x = this.speed * Math.cos(this.dir)

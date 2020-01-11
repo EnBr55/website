@@ -10,12 +10,12 @@ export const SnakeSim = (p5) => {
   let generation = 1
 
   // SIMULATION VARIABLES
-  let simulationSpeed = 1
+  let simulationSpeed = 30
   let windowDimensions = {
     width: p5.windowWidth / 1.3,
     height: p5.windowHeight / 1.3,
   }
-  let numSnakes = 20
+  let numSnakes = 15
   // initial snakes (random dna)
   for (let i = 0; i < numSnakes; i++) {
     snakes.push(
@@ -67,7 +67,7 @@ export const SnakeSim = (p5) => {
       headCheck: boxSnake,
       response: 1,
       call: (caller, other) => {
-        if (other.getActive()) {
+        if (other.getActive() && roundTimer/60 > 2) {
           caller.die()
           snakeToFood(caller)
         }
@@ -101,7 +101,10 @@ export const SnakeSim = (p5) => {
     let sortedSnakes = sortSnakes(pool)
     let newSnakes = []
 
-    for (let i = 0; i < Math.floor(sortedSnakes.length / 2); i++) {
+    let numOldSnakes = Math.floor(numSnakes / 3)
+    let numNewSnakes = numSnakes - numOldSnakes
+
+    for (let i = 0; i < numOldSnakes; i++) {
       // push parent back in with no mutations to DNA
       newSnakes.push(
         new Snake(
@@ -110,13 +113,15 @@ export const SnakeSim = (p5) => {
           mutate(sortedSnakes[i][0].dna, 0)
         )
       )
+    }
 
+    for (let i = 0; i < numNewSnakes; i++) {
       // parent creates a child with mutations to dna
       newSnakes.push(
         new Snake(
           (Math.random() * windowDimensions.width) / 1.5,
           (Math.random() * windowDimensions.height) / 1.5,
-          mutate(sortedSnakes[i][0].dna, Math.random())
+          mutate(newSnakes[i % numOldSnakes].dna, Math.random() * 0.02)
         )
       )
     }
@@ -126,6 +131,7 @@ export const SnakeSim = (p5) => {
   // ------- MAIN LOOP ------- //
 
   let alive
+  let roundTimer = 0
   p5.draw = () => {
     p5.background(15)
     p5.textSize(14)
@@ -153,10 +159,12 @@ export const SnakeSim = (p5) => {
 
       snakes = breed(oldSnakes)
       generation++
-      if (generation > 40) { simulationSpeed = 1}
+      roundTimer = 0
+      if (generation > 10) { simulationSpeed = 1}
     }
 
     for (let i = 0; i < simulationSpeed; i++) {
+      roundTimer++
       targets[0].target = snakes
       targets[1].target = food
       for (let snake of snakes) {
