@@ -1,23 +1,16 @@
-import { NeuralNet, matrixConstructor, mutate, crossOver } from './NeuralNet'
-import {
-  lineLine,
-  lineBox,
-  colliding,
-  lineSnake,
-  boxSnake,
-} from './SimOperations'
-import math from 'mathjs'
+import { mutate } from './NeuralNet'
+import { lineSnake, boxSnake, lineBox, colliding, removeElement } from './SimOperations'
 import Snake from './Snake'
+import Food from './Food'
 
 export const SnakeSim = (p5) => {
   // WORLD VARIABLES
   let snakes = []
+  let food = []
   let generation = 1
 
   // SIMULATION VARIABLES
-  let simulationSpeed = 20
-  let showEyes = false
-  let mutationRate = 0.3
+  let simulationSpeed = 1
   let windowDimensions = {
     width: p5.windowWidth / 1.3,
     height: p5.windowHeight / 1.3,
@@ -47,6 +40,18 @@ export const SnakeSim = (p5) => {
     p5.frameRate(60)
   }
 
+  const snakeToFood = snake => {
+    for (let segment of snake.segments) {
+      food.push(new Food(
+        segment.pos.x,
+        segment.pos.y,
+        segment.width,
+        segment.height,
+        snake.color
+      ))
+    }
+  }
+
   /* The snakes' update function takes as its second argument an array
    * of 'collideable' objects.
    * Each object includes a collision checking function for both
@@ -64,13 +69,24 @@ export const SnakeSim = (p5) => {
       call: (caller, other) => {
         if (other.getActive()) {
           caller.die()
+          snakeToFood(caller)
         }
       },
     },
+   {
+     target: food,
+     feelerCheck: lineBox,
+     headCheck: colliding,
+     response: -1,
+     call: (caller, other) => {
+       caller.feed(1)
+       removeElement(food, other)
+     }
+   }
   ]
 
   // takes array of array of snake objects coupled with fitness
-  let sortSnakes = (array) => {
+  const sortSnakes = (array) => {
     function comparator(a, b) {
       if (a[1] < b[1]) return -1;
       if (a[1] > b[1]) return 1;
@@ -115,6 +131,7 @@ export const SnakeSim = (p5) => {
     p5.textSize(14)
 
     alive = snakes.filter(t => t.getAlive()).length
+    p5.noStroke()
     p5.fill('red')
     p5.text('Generation: ' + generation + ' | Alive: ' + alive, 5, 15)
 
@@ -127,6 +144,7 @@ export const SnakeSim = (p5) => {
       }
       averageFitness /= snakes.length
 
+      food = []
       console.log(
         `Generation ${generation} finished.
          Average Fitness: ${averageFitness}.
@@ -134,12 +152,13 @@ export const SnakeSim = (p5) => {
       )
 
       snakes = breed(oldSnakes)
-      targets[0].target = snakes
       generation++
       if (generation > 40) { simulationSpeed = 1}
     }
 
     for (let i = 0; i < simulationSpeed; i++) {
+      targets[0].target = snakes
+      targets[1].target = food
       for (let snake of snakes) {
         if (snake.getShouldUpdate()) {
           if (simulationSpeed < 5) {
@@ -147,6 +166,9 @@ export const SnakeSim = (p5) => {
           }
           snake.update(windowDimensions, targets)
         }
+      }
+      for (let morsel of food) {
+        morsel.draw(p5)
       }
     }
   }

@@ -1,9 +1,9 @@
 export const colliding = (rect1, rect2) => {
   return (
-    rect1.x < rect2.x + rect2.width &&
-    rect1.x + rect1.width > rect2.x &&
-    rect1.y < rect2.y + rect2.height &&
-    rect1.y + rect1.height > rect2.y
+    rect1.pos.x < rect2.pos.x + rect2.width &&
+    rect1.pos.x + rect1.width > rect2.pos.x &&
+    rect1.pos.y < rect2.pos.y + rect2.height &&
+    rect1.pos.y + rect1.height > rect2.pos.y
   ) 
 }
 
@@ -23,28 +23,28 @@ export const lineLine = (line1, line2) => {
 
 export const lineBox = (line, box) => {
   let left = lineLine(line, {
-    x1: box.x,
-    y1: box.y,
-    x2: box.x,
-    y2: box.y + box.height,
+    x1: box.pos.x,
+    y1: box.pos.y,
+    x2: box.pos.x,
+    y2: box.pos.y + box.height,
   })
   let right = lineLine(line, {
-    x1: box.x + box.width,
-    y1: box.y,
-    x2: box.x + box.width,
-    y2: box.y + box.height,
+    x1: box.pos.x + box.width,
+    y1: box.pos.y,
+    x2: box.pos.x + box.width,
+    y2: box.pos.y + box.height,
   })
   let top = lineLine(line, {
-    x1: box.x,
-    y1: box.y,
-    x2: box.x + box.width,
-    y2: box.y,
+    x1: box.pos.x,
+    y1: box.pos.y,
+    x2: box.pos.x + box.width,
+    y2: box.pos.y,
   })
   let bottom = lineLine(line, {
-    x1: box.x,
-    y1: box.y + box.height,
-    x2: box.x + box.width,
-    y2: box.y + box.height,
+    x1: box.pos.x,
+    y1: box.pos.y + box.height,
+    x2: box.pos.x + box.width,
+    y2: box.pos.y + box.height,
   })
   return (left || right || top || bottom)
 }
@@ -60,3 +60,10 @@ export const boxSnake = (box, snake) => {
     if (colliding(box, segment) && snake.getActive()) { return true }
   }
 }
+
+export const removeElement = (array, elem) => {  
+    let index = array.indexOf(elem)
+    if (index > -1) {
+        array.splice(index, 1)
+    }
+  }

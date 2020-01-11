@@ -1,10 +1,10 @@
-import { NeuralNet, matrixConstructor, mutate, crossOver } from './NeuralNet'
+import { NeuralNet, matrixConstructor } from './NeuralNet'
 
 export default class Snake {
   constructor(x, y, dna) {
     this.alive = true
     this.active = true
-    this.hunger = { max: 10, min: 0, current: 0 }
+    this.hunger = { max: 20, min: 0, current: 0 }
 
     this.width = 25
     this.height = 25
@@ -19,6 +19,7 @@ export default class Snake {
     this.clock = 0
     this.deathTimer = 0
     this.shouldUpdate = true
+    this.showEyes = true
 
     this.numFeelers = 3
     this.feelerLength = 300
@@ -44,7 +45,7 @@ export default class Snake {
     }
 
     this.segments = [
-      { x: this.pos.x, y: this.pos.y, width: this.width, height: this.height },
+      { pos: { x: this.pos.x, y: this.pos.y }, width: this.width, height: this.height },
     ]
     this.numTailSegments = 4
     // Number of divisions of the framerate to account for
@@ -52,8 +53,10 @@ export default class Snake {
 
     for (let i = 1; i < this.numTailSegments + 1; i++) {
       this.segments.push({
+        pos: {
         x: this.history[(this.clock + this.tailSegmentOffset * i + 60) % 60].x,
         y: this.history[(this.clock + this.tailSegmentOffset * i + 60) % 60].y,
+        },
         width: this.width - this.width * 0.1 * i,
         height: this.height - this.width * 0.1 * i,
       })
@@ -76,6 +79,10 @@ export default class Snake {
 
   die() {
     this.alive = false
+  }
+
+  feed(amount) {
+    this.hunger.current = Math.max(this.hunger.min, this.hunger.current - amount)
   }
 
   updateFeelers() {
@@ -105,18 +112,16 @@ export default class Snake {
   }
 
   checkFeelers(group, check, response) {
-    this.color[3] = 80
     for (let feeler of this.feelers) {
-      // initial values (if not colliding)
-      feeler.value = 0
-      feeler.distance = 1
-
       for (let body of group) {
         if (body !== this) {
           if (check(feeler, body)) {
-            feeler.value = response
-            feeler.distance = this.toFeelerDistance(feeler, body)
-            this.color[3] = 130
+            let dist = this.toFeelerDistance(feeler, body)
+            if (dist < feeler.distance) {
+              feeler.dist = dist
+              feeler.value = response
+            }
+            this.color[3] = 200
           }
         }
       }
@@ -132,6 +137,7 @@ export default class Snake {
   }
 
   update(windowDimensions, world) {
+
     if (this.alive) {
       this.clock++
 
@@ -175,13 +181,13 @@ export default class Snake {
 
       // Write position to history and update segments based on position
       this.history[this.clock % 60] = { x: this.pos.x, y: this.pos.y }
-      this.segments[0].x = this.pos.x
-      this.segments[0].y = this.pos.y
+      this.segments[0].pos.x = this.pos.x
+      this.segments[0].pos.y = this.pos.y
       for (let i = 1; i < this.numTailSegments + 1; i++) {
-        this.segments[i].x = this.history[
+        this.segments[i].pos.x = this.history[
           (this.clock - this.tailSegmentOffset * i + 60) % 60
         ].x
-        this.segments[i].y = this.history[
+        this.segments[i].pos.y = this.history[
           (this.clock - this.tailSegmentOffset * i + 60) % 60
         ].y
       }
@@ -195,6 +201,14 @@ export default class Snake {
       }
 
       // Collisions
+
+      // initial values (if not colliding)
+      this.color[3] = 80
+      for (let feeler of this.feelers) {
+        feeler.value = 0
+        feeler.distance = 1
+      }
+
       for (let obj of world) {
         // Update feelers
         this.checkFeelers(obj.target, obj.feelerCheck, obj.response)
@@ -208,7 +222,7 @@ export default class Snake {
     } else {
       this.color = [200, 0, 0, 50]
       this.deathTimer++
-      if (this.deathTimer / 60 > 3) {
+      if (this.deathTimer > 30) {
         this.active = false
         this.shouldUpdate = false
       }
@@ -231,7 +245,7 @@ export default class Snake {
     for (let segment of this.segments) {
       p5.fill(this.color)
       p5.noStroke()
-      p5.rect(segment.x, segment.y, segment.width, segment.height)
+      p5.rect(segment.pos.x, segment.pos.y, segment.width, segment.height)
     }
     p5.stroke('red')
     p5.line(
