@@ -15,7 +15,7 @@ export const SnakeSim = (p5) => {
   let generation = 1
 
   // SIMULATION VARIABLES
-  let simulationSpeed = 1
+  let simulationSpeed = 20
   let showEyes = false
   let mutationRate = 0.3
   let windowDimensions = {
@@ -100,7 +100,7 @@ export const SnakeSim = (p5) => {
         new Snake(
           (Math.random() * windowDimensions.width) / 1.5,
           (Math.random() * windowDimensions.height) / 1.5,
-          mutate(sortedSnakes[i][0].dna, 0.3)
+          mutate(sortedSnakes[i][0].dna, Math.random())
         )
       )
     }
@@ -136,12 +136,15 @@ export const SnakeSim = (p5) => {
       snakes = breed(oldSnakes)
       targets[0].target = snakes
       generation++
+      if (generation > 40) { simulationSpeed = 1}
     }
 
     for (let i = 0; i < simulationSpeed; i++) {
       for (let snake of snakes) {
         if (snake.getShouldUpdate()) {
+          if (simulationSpeed < 5) {
           snake.draw(p5)
+          }
           snake.update(windowDimensions, targets)
         }
       }

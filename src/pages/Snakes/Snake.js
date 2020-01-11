@@ -20,7 +20,7 @@ export default class Snake {
     this.deathTimer = 0
     this.shouldUpdate = true
 
-    this.numFeelers = 10
+    this.numFeelers = 3
     this.feelerLength = 300
     this.feelers = []
     for (let i = 1; i < this.numFeelers + 1; i++) {
@@ -99,8 +99,8 @@ export default class Snake {
     }
   }
 
-  toFeelerDistance(obj1, obj2) {
-    let dist = Math.sqrt((obj2.x - obj1.x) ** 2 + (obj2.y - obj1.y) ** 2)
+  toFeelerDistance(feeler, obj) {
+    let dist = Math.sqrt((obj.pos.x - feeler.x1) ** 2 + (obj.pos.y - feeler.y1) ** 2)
     return dist >= this.feelerLength ? 1 : dist / this.feelerLength
   }
 
@@ -115,7 +115,7 @@ export default class Snake {
         if (body !== this) {
           if (check(feeler, body)) {
             feeler.value = response
-            feeler.distance = this.toFeelerDistance(feeler.x1, body.pos.x)
+            feeler.distance = this.toFeelerDistance(feeler, body)
             this.color[3] = 130
           }
         }
@@ -150,7 +150,7 @@ export default class Snake {
         this.dir += outputs[0] * 0.09
       }
       if (outputs[1]) {
-        this.speed = 3 + outputs[1] * 2
+        this.speed = 4 + outputs[1] * 2
       }
 
       this.vel.x = this.speed * Math.cos(this.dir)
