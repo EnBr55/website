@@ -51,12 +51,12 @@ export const lineBox = (line, box) => {
 
 export const lineSnake = (line, snake) => {
   for (let segment of snake.segments) {
-    if (lineBox(line, segment) && snake.getAlive()) { return true }
+    if (lineBox(line, segment) && snake.getActive()) { return true }
   }
 }
 
 export const boxSnake = (box, snake) => {
   for (let segment of snake.segments) {
-    if (colliding(box, segment) && snake.getAlive()) { return true }
+    if (colliding(box, segment) && snake.getActive()) { return true }
   }
 }

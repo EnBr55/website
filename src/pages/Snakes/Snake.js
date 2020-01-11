@@ -2,12 +2,12 @@ import { NeuralNet, matrixConstructor, mutate, crossOver } from './NeuralNet'
 
 export default class Snake {
   constructor(x, y, dna) {
-
     this.alive = true
-    this.hunger = { max: 30, min: 0, current: 0 }
+    this.active = true
+    this.hunger = { max: 10, min: 0, current: 0 }
 
-    this.width = 50
-    this.height = 50
+    this.width = 25
+    this.height = 25
 
     this.pos = { x: x, y: y }
     this.vel = { x: 0, y: 0 }
@@ -20,20 +20,26 @@ export default class Snake {
     this.deathTimer = 0
     this.shouldUpdate = true
 
-    this.numFeelers = 5
+    this.numFeelers = 10
     this.feelerLength = 300
     this.feelers = []
     for (let i = 1; i < this.numFeelers + 1; i++) {
       // Divide a semicircle in n+1 equal section with n lines (feelers)
       // Assume angle of 0 goes through the centre of the semicircle such that -PI/2 is the start
-      let angle = (-Math.PI / 2) + (i * Math.PI / (this.numFeelers + 1))
+      let angle = -Math.PI / 2 + (i * Math.PI) / (this.numFeelers + 1)
       this.feelers.push({
         x1: this.pos.x + this.width / 2,
-        x2: this.pos.x + this.width / 2 + this.feelerLength * Math.cos(this.dir - angle),
+        x2:
+          this.pos.x +
+          this.width / 2 +
+          this.feelerLength * Math.cos(this.dir - angle),
         y1: this.pos.y + this.height / 2,
-        y2: this.pos.y + this.height / 2 + this.feelerLength * Math.sin(this.dir - angle),
+        y2:
+          this.pos.y +
+          this.height / 2 +
+          this.feelerLength * Math.sin(this.dir - angle),
         distance: 1,
-        value: 0
+        value: 0,
       })
     }
 
@@ -55,9 +61,16 @@ export default class Snake {
 
     this.dna = dna
     if (!this.dna) {
-      this.dna = matrixConstructor(this.numFeelers * 2 + 2, 16, 16, 2, 4)
+      // [input nodes, hidden layer 1, hidden layer 2, output nodes, genes]
+      this.dna = matrixConstructor(this.numFeelers * 2 + 1, 16, 16, 2, 4)
     }
-    this.color = [0, 200, 50, 100]
+    this.genes = this.dna[6][0]
+    this.color = [
+      200 * this.genes[0] + 50,
+      200 * this.genes[1] + 50,
+      200 * this.genes[2] + 50,
+      20,
+    ]
     this.brain = new NeuralNet(this.dna)
   }
 
@@ -69,13 +82,19 @@ export default class Snake {
     for (let i = 1; i < this.numFeelers + 1; i++) {
       // Divide a semicircle in n+1 equal section with n lines (feelers)
       // Assume angle of 0 goes through the centre of the semicircle such that -PI/2 is the start
-      let angle = (-Math.PI / 2) + (i * Math.PI / (this.numFeelers + 1))
-      this.feelers[i-1] = {
-        ...this.feelers[i-1],
+      let angle = -Math.PI / 2 + (i * Math.PI) / (this.numFeelers + 1)
+      this.feelers[i - 1] = {
+        ...this.feelers[i - 1],
         x1: this.pos.x + this.width / 2,
-        x2: this.pos.x + this.width / 2 + this.feelerLength * Math.cos(this.dir - angle),
+        x2:
+          this.pos.x +
+          this.width / 2 +
+          this.feelerLength * Math.cos(this.dir - angle),
         y1: this.pos.y + this.height / 2,
-        y2: this.pos.y + this.height / 2 + this.feelerLength * Math.sin(this.dir - angle)
+        y2:
+          this.pos.y +
+          this.height / 2 +
+          this.feelerLength * Math.sin(this.dir - angle),
       }
     }
   }
@@ -84,7 +103,7 @@ export default class Snake {
     let dist = Math.sqrt((obj2.x - obj1.x) ** 2 + (obj2.y - obj1.y) ** 2)
     return dist >= this.feelerLength ? 1 : dist / this.feelerLength
   }
-  
+
   checkFeelers(group, check, response) {
     this.color[3] = 80
     for (let feeler of this.feelers) {
@@ -97,15 +116,19 @@ export default class Snake {
           if (check(feeler, body)) {
             feeler.value = response
             feeler.distance = this.toFeelerDistance(feeler.x1, body.pos.x)
-            this.color[3] = 200
+            this.color[3] = 130
           }
         }
       }
     }
   }
-  
+
   getFitness() {
     return this.clock
+  }
+
+  getDna() {
+    return this.dna
   }
 
   update(windowDimensions, world) {
@@ -116,16 +139,19 @@ export default class Snake {
       this.updateFeelers()
 
       let inputs = []
-      for (let feeler of this.feelers) { 
+      for (let feeler of this.feelers) {
         inputs.push([feeler.distance])
         inputs.push([feeler.value])
       }
-      inputs.push([this.hunger.current])
-      inputs.push([this.hunger.max])
+      inputs.push([this.hunger.current / this.hunger.max])
       let outputs = this.brain.feedforward(inputs)
-      
-      if (outputs[0]) { this.dir += outputs[0] * 0.12 } 
-      if (outputs[1]) { this.speed = 2 + outputs[1] * 2 }
+
+      if (outputs[0]) {
+        this.dir += outputs[0] * 0.09
+      }
+      if (outputs[1]) {
+        this.speed = 3 + outputs[1] * 2
+      }
 
       this.vel.x = this.speed * Math.cos(this.dir)
       this.vel.y = this.speed * Math.sin(this.dir)
@@ -161,9 +187,11 @@ export default class Snake {
       }
 
       // Update hunger
-      if (this.clock % 60 === 0) { this.hunger.current++ }
+      if (this.clock % 60 === 0) {
+        this.hunger.current++
+      }
       if (this.hunger.current > this.hunger.max) {
-        this.alive = false
+        this.die()
       }
 
       // Collisions
@@ -172,7 +200,7 @@ export default class Snake {
         this.checkFeelers(obj.target, obj.feelerCheck, obj.response)
         // Collisions involving head
         for (let body of obj.target) {
-          if (body !== this && obj.headCheck(this.segments[0], body)) { 
+          if (body !== this && obj.headCheck(this.segments[0], body)) {
             obj.call(this, body)
           }
         }
@@ -181,6 +209,7 @@ export default class Snake {
       this.color = [200, 0, 0, 50]
       this.deathTimer++
       if (this.deathTimer / 60 > 3) {
+        this.active = false
         this.shouldUpdate = false
       }
     }
@@ -192,6 +221,10 @@ export default class Snake {
 
   getAlive() {
     return this.alive
+  }
+
+  getActive() {
+    return this.active
   }
 
   draw(p5) {
