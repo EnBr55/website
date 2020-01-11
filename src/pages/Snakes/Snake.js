@@ -17,6 +17,8 @@ export default class Snake {
     this.history = Array(60).fill({ x: this.pos.x, y: this.pos.y })
     this.time = 0
     this.clock = 0
+    this.deathTimer = 0
+    this.shouldUpdate = true
 
     this.numFeelers = 5
     this.feelerLength = 300
@@ -108,7 +110,6 @@ export default class Snake {
 
   update(windowDimensions, world) {
     if (this.alive) {
-      this.speed = Math.random() * 5
       this.clock++
 
       // Update position
@@ -176,7 +177,21 @@ export default class Snake {
           }
         }
       }
+    } else {
+      this.color = [200, 0, 0, 50]
+      this.deathTimer++
+      if (this.deathTimer / 60 > 3) {
+        this.shouldUpdate = false
+      }
     }
+  }
+
+  getShouldUpdate() {
+    return this.shouldUpdate
+  }
+
+  getAlive() {
+    return this.alive
   }
 
   draw(p5) {
@@ -192,7 +207,7 @@ export default class Snake {
       this.pos.x + this.width / 2 + this.width * Math.cos(this.dir),
       this.pos.y + this.height / 2 + this.height * Math.sin(this.dir),
     )
-    p5.stroke('green')
+    p5.stroke(this.color)
     for (let feeler of this.feelers) {
       p5.line(feeler.x1, feeler.y1, feeler.x2, feeler.y2)
     }

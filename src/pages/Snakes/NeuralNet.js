@@ -107,39 +107,19 @@ class NeuralNet {
     let inputs = toMatrix(input_array)
 
     let hidden1 = math.multiply(this.weights_ih1, inputs)
-    // console.log(hidden1)
     hidden1 = math.add(hidden1, this.bias_h1)
-
-    // hidden1 = hidden1.map((value) => {
-    //     return sigmoid(value)
-    // })
     hidden1 = math.tanh(hidden1)
-
-    // console.log('hidden after: '+hidden1)
 
     let hidden2 = math.multiply(this.weights_h1h2, hidden1)
     hidden2 = math.add(hidden2, this.bias_h2)
-
-    // hidden2 = hidden2.map((value) => {
-    //     return sigmoid(value)
-    // })
     hidden2 = math.tanh(hidden2)
-
-    // console.log('hidden2 after: ' +hidden2)
 
     let output = math.multiply(this.weights_h2o, hidden2)
     output = math.add(output, this.bias_o)
-
-    // console.log("output:")
-    // console.log(output)
-
-    // output = output.map((value) => {
-    //     return sigmoid(value)
-    // })
     output = math.tanh(output)
 
-    //transpose to make 1 by X matrix into array
-    // then print the first row (the array)
+    // transpose to make 1 by X matrix into array
+    // then print the first row (which is the entire array)
     return math.transpose(output).valueOf()[0]
   }
 }
