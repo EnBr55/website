@@ -1,6 +1,3 @@
-import { create, all } from 'mathjs'
-const math = create(all)
-
 export const colliding = (rect1, rect2) => {
   return (
     rect1.pos.x < rect2.pos.x + rect2.width &&
@@ -10,8 +7,8 @@ export const colliding = (rect1, rect2) => {
   )
 }
 
-// line intercept math by Paul Bourke http://paulbourke.net/geometry/pointlineplane/
-// Determine the intersection point of two line segments
+// modified line intercept math by Paul Bourke http://paulbourke.net/geometry/pointlineplane/
+// Determine the intersection point of two lines
 export const lineLine = (line1, line2) => {
   let [x1, x2, y1, y2] = [line1.x1, line1.x2, line1.y1, line1.y2]
   let [x3, x4, y3, y4] = [line2.x1, line2.x2, line2.y1, line2.y2]
@@ -35,7 +32,6 @@ export const lineLine = (line1, line2) => {
     return false
   }
 
-  // Return a object with the x and y coordinates of the intersection
   let x = x1 + ua * (x2 - x1)
   let y = y1 + ua * (y2 - y1)
 
@@ -43,7 +39,6 @@ export const lineLine = (line1, line2) => {
 }
 
 export const lineBox = (line, box) => {
-  //console.log(line, box)
   let left = lineLine(line, {
     x1: box.pos.x,
     y1: box.pos.y,

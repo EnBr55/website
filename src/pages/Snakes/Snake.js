@@ -90,8 +90,6 @@ export default class Snake {
 
   updateFeelers() {
     for (let i = 1; i < this.numFeelers + 1; i++) {
-      // Divide a semicircle in n+1 equal section with n lines (feelers)
-      // Assume angle of 0 goes through the centre of the semicircle such that -PI/2 is the start
       let angle = -Math.PI / 2 + (i * Math.PI) / (this.numFeelers + 1)
       this.feelers[i - 1] = {
         ...this.feelers[i - 1],
@@ -107,11 +105,6 @@ export default class Snake {
           this.feelerLength * Math.sin(this.dir - angle),
       }
     }
-  }
-
-  toFeelerDistance(feeler, obj) {
-    let dist = Math.sqrt((obj.pos.x - feeler.x1) ** 2 + (obj.pos.y - feeler.y1) ** 2)
-    return dist / this.feelerLength
   }
 
   checkFeelers(group, check, response) {
@@ -146,7 +139,7 @@ export default class Snake {
         this.clock++
       }
 
-      // wiggle
+      // artificial wiggle :-)
       this.dir += Math.random() * 0.125 - 0.1125
 
       // Update position
@@ -165,10 +158,13 @@ export default class Snake {
         this.speed = 2 + outputs[1] * 1
       }
 
+      /* if the feelers can't see anything, just go in a random direction
+       * ideally if the simulation was improved such that the snakes more quickly
+       * learned to eat food, we could just give them full control of their movement
+       *  and they would hopefully explore on their own will */
       if (this.feelers.filter(t => t.distance === 1).length === this.numFeelers) {
         this.dir += Math.random() * 0.25 - 0.125
-      } 
-      else if (outputs[0]) {
+      } else if (outputs[0]) {
         this.dir += outputs[0] * 0.09
         this.hunger.current += Math.abs(outputs[0]**3) * 0.1
       }

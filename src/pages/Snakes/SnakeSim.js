@@ -4,8 +4,6 @@ import {
   boxSnake,
   lineBox,
   colliding,
-  lineLine,
-  boxLine,
   removeElement,
 } from './SimOperations'
 import Snake from './Snake'
@@ -20,6 +18,7 @@ export const SnakeSim = (p5) => {
 
   // SIMULATION VARIABLES
   let simulationSpeed = 1
+  let showEyes = false
   let windowDimensions = {
     width: p5.windowWidth / 1.3,
     height: p5.windowHeight / 1.3,
@@ -60,9 +59,14 @@ export const SnakeSim = (p5) => {
     p5.frameRate(60)
   }
 
-  p5.keyPressed = (value) => {
-    if (value.keyCode === 32) {
-      simulationSpeed = simulationSpeed === 1 ? 30 : 1
+  // this function name is the fault of the p5 react wrapper : (
+  p5.myCustomRedrawAccordingToNewPropsHandler = props => {
+    simulationSpeed = props.simSpeed
+    if (props.showEyes !== showEyes) {
+      showEyes = props.showEyes
+      for (let snake of snakes) {
+        snake.showEyes = showEyes
+      }
     }
   }
 
@@ -184,6 +188,11 @@ export const SnakeSim = (p5) => {
     p5.noStroke()
     p5.fill('red')
     p5.text('Generation: ' + generation + ' | Alive: ' + alive, 5, 15)
+    if (simulationSpeed > 5) {
+      p5.fill('red')
+      p5.noStroke()
+      p5.text('Training in Progress', 10, windowDimensions.height/2)
+    }
 
     if (alive === 0) {
       let oldSnakes = []
@@ -208,7 +217,7 @@ export const SnakeSim = (p5) => {
 
     for (let i = 0; i < simulationSpeed; i++) {
       roundTimer++
-      if (roundTimer % 180 == 0) {
+      if (roundTimer % 180 === 0) {
         food.push(new Food(
           (Math.random() * (windowDimensions.width - 50)) + 50,
           (Math.random() * (windowDimensions.height - 50)) + 50,
@@ -225,7 +234,7 @@ export const SnakeSim = (p5) => {
         if (snake.getShouldUpdate()) {
           if (simulationSpeed < 5) {
             snake.draw(p5)
-          }
+          } 
           snake.update(windowDimensions, targets)
         }
       }

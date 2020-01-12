@@ -65,6 +65,8 @@ let mutate = (dna, amount) => {
   return newDNA
 }
 
+// very primitive crossover function. selects a random source for each gene individually
+// assumes both parents have identical dna structure
 let crossOver = (parent1, parent2, mutationAmount) => {
   let dna1 = parent1.dna
   let dna2 = parent2.dna
@@ -76,7 +78,6 @@ let crossOver = (parent1, parent2, mutationAmount) => {
       crossedOver[z][k] = []
       for (let j = 0; j < dna1[z][k].length; j++) {
         crossedOver[z][k][j] = dnaPool[Math.round(Math.random())][z][k][j]
-        // console.log(crossedOver)
       }
     }
   }
@@ -95,6 +96,7 @@ class NeuralNet {
     this.bias_o = dna[5]
   }
 
+  // returns regular array of length equal to num of output nodes
   feedforward(input_array) {
     let inputs = toMatrix(input_array)
 
@@ -111,7 +113,7 @@ class NeuralNet {
     output = math.tanh(output)
 
     // transpose to make 1 by X matrix into array
-    // then print the first row (which is the entire array)
+    // then return the first row (which is the entire array)
     return math.transpose(output).valueOf()[0]
   }
 }
