@@ -1,0 +1,27 @@
+.button {
+  border-radius: 5px;
+  min-width: 6em;
+  height: 2.3em;
+  padding-top: 0.2em;
+  box-shadow: 1px 2px 3px 3px rgba(8, 8, 8, 0.4);
+  transition: opacity 0.3s ease;
+  font-size: large;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version */
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.button:hover {
+  opacity: 0.75;
+  cursor: pointer;
+  transition: opacity 0.8s ease;
+}
+
+.button:active::after {
+  color: green
+}

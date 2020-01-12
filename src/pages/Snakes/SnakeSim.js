@@ -127,7 +127,7 @@ export const SnakeSim = (p5) => {
 
   // takes array of array of snake objects coupled with fitness
   const sortSnakes = (array) => {
-    function comparator(a, b) {
+    const comparator = (a, b) => {
       if (a[1] < b[1]) return -1
       if (a[1] > b[1]) return 1
       return 0
@@ -164,7 +164,7 @@ export const SnakeSim = (p5) => {
           crossOver(
             newSnakes[i % numOldSnakes],
             newSnakes[(i + 1) % numOldSnakes],
-            0.2,
+            0.15,
           ),
         ),
       )

@@ -29,4 +29,9 @@ a:visited {
 a { 
   text-decoration: none;
   color: inherit;
+  outline: none;
+}
+
+img {
+  width: 100%;
 }

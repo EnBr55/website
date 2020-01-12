@@ -1,6 +1,7 @@
 import React from 'react'
 import './Projects.css'
 import { Link } from 'react-router-dom'
+import snakesGIF from './Resources/snakes.gif'
 
 const Projects: React.FC = () => {
   return (
@@ -9,6 +10,7 @@ const Projects: React.FC = () => {
       <div className="project" >
         <Link to='snakes'>
           <h2>Snakes</h2>
+          <img src={snakesGIF} alt='an animated GIF of the snakes'/>
           <p>Some description I'll probably write later.</p>
         </Link>
       </div>
