@@ -25,6 +25,12 @@ hr {
 a:visited {
   color: inherit;
 }
+a:hover {
+  color: inherit;
+}
+a:link {
+  color: inherit;
+}
 
 a { 
   text-decoration: none;
