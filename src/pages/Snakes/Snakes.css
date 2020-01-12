@@ -1,0 +1,10 @@
+.p5Canvas {
+  margin-top: 1em;
+  box-shadow: 0px 0px 16px 10px rgba(10, 50, 140, 0.5);
+}
+
+.controls {
+  margin: 1em auto;
+  display: flex;
+  justify-content: space-around;
+}

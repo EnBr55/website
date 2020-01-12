@@ -4,12 +4,11 @@ import './NavbarItem.css'
 type props = {
   text: string,
   redirectLocation: string,
-  setRedirect(location: string): void,
 }
 
-const NavbarItem: React.FC<props> = ({text, redirectLocation, setRedirect}) => {
+const NavbarItem: React.FC<props> = ({text, redirectLocation}) => {
   return (
-    <div className='navbar-item' role='button' onClick={() => setRedirect(redirectLocation)}>
+    <div className='navbar-item' role='button' >
       <div className='navbar-item-content'>
         {text}
       </div>

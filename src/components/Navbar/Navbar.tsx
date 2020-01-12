@@ -1,12 +1,11 @@
 import React from 'react'
 import './Navbar.css'
 import NavbarItem from '../NavbarItem/NavbarItem'
-import { Redirect } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import logo from '../../bb.png'
 import { ThemeContext, themes } from '../../contexts/ThemeContext'
 
 const Navbar: React.FC = () => {
-  const [redirect, setRedirect] = React.useState<string | undefined>(undefined)
   const [width, setWidth] = React.useState(window.innerWidth)
   const theme = React.useContext(ThemeContext)
   React.useEffect(() => {
@@ -24,19 +23,18 @@ const Navbar: React.FC = () => {
     <div className='navbar noselect' style={{
       background: theme.theme.navbarBackground,
     }}>
-      {redirect !== undefined && <Redirect to={redirect} />}
       <div className='left-side'>
-        <NavbarItem text='Home'  redirectLocation='' setRedirect={setRedirect} />
-        { width > 600 && <NavbarItem text='Projects' redirectLocation='projects' setRedirect={setRedirect} /> }
+        <Link to=''><NavbarItem text='Home'  redirectLocation='' />Home</Link>
+        { width > 600 && <Link to='projects'><NavbarItem text='Projects' redirectLocation='projects' /></Link> }
       </div>
-      <div className='logo-container' onClick={() => setRedirect('')}>
-        <img src={logo} alt='logo' role='button' height='100%'/>
+      <div className='logo-container' >
+        <Link to=''><img src={logo} alt='logo' role='button' height='100%'/></Link>
       </div>
       <div className='right-side'>
         <div className='theme-switcher' role='button' onClick={() => theme.toggleTheme()}>
           {theme.theme === themes.light ? <>&#128262;</> : <>&#127765;</>}
         </div>
-        { width <= 600 && <NavbarItem text='Projects' redirectLocation='projects' setRedirect={setRedirect} /> }
+        { width <= 600 && <Link to='projects'><NavbarItem text='Projects' redirectLocation='projects' /></Link> }
       </div>
     </div>
    )
