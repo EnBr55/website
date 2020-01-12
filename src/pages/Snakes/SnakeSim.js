@@ -34,13 +34,13 @@ export const SnakeSim = (p5) => {
 
   setWalls()
 
-  let numSnakes = 15
+  let numSnakes = 20
   // initial snakes (random dna)
   for (let i = 0; i < numSnakes; i++) {
     snakes.push(
       new Snake(
-        (Math.random() * windowDimensions.width) / 1.5,
-        (Math.random() * windowDimensions.height) / 1.5,
+        (Math.random() * (windowDimensions.width - 50)) + 50,
+        (Math.random() * (windowDimensions.height - 50)) + 50,
         undefined,
       ),
     )
@@ -98,7 +98,7 @@ export const SnakeSim = (p5) => {
         // grace period
         if (other.getActive() && roundTimer / 60 > 1) {
           caller.die()
-          if (generation > 100) {
+          if (generation > 0) {
             snakeToFood(other)
           }
         }
@@ -110,7 +110,7 @@ export const SnakeSim = (p5) => {
       headCheck: colliding,
       response: 0,
       call: (caller, other) => {
-        caller.feed(1)
+        caller.feed(caller.hunger.max / 4)
         removeElement(food, other)
       },
     },
@@ -164,7 +164,7 @@ export const SnakeSim = (p5) => {
           crossOver(
             newSnakes[i % numOldSnakes],
             newSnakes[(i + 1) % numOldSnakes],
-            0.1,
+            0.2,
           ),
         ),
       )
@@ -179,8 +179,6 @@ export const SnakeSim = (p5) => {
   p5.draw = () => {
     p5.background(15)
     p5.textSize(14)
-
-    //console.table([snakes[0].feelers[0].distance,snakes[0].feelers[1].distance,snakes[0].feelers[2].distance,snakes[0].feelers[3].distance,snakes[0].feelers[4].distance])
 
     alive = snakes.filter((t) => t.getAlive()).length
     p5.noStroke()
@@ -206,13 +204,20 @@ export const SnakeSim = (p5) => {
       snakes = breed(oldSnakes)
       generation++
       roundTimer = 0
-      if (generation > 100) {
-        simulationSpeed = 1
-      }
     }
 
     for (let i = 0; i < simulationSpeed; i++) {
       roundTimer++
+      if (roundTimer % 180 == 0) {
+        food.push(new Food(
+          (Math.random() * (windowDimensions.width - 50)) + 50,
+          (Math.random() * (windowDimensions.height - 50)) + 50,
+          snakes[0].width * 1.5,
+          snakes[0].height * 1.5,
+          'red'
+        ))
+          
+      }
       targets[0].target = snakes
       targets[1].target = food
       targets[2].target = walls
