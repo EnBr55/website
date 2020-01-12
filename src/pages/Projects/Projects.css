@@ -17,22 +17,22 @@
   transition: box-shadow 0.3s ease;
 }
 
-hr {
+.Projects hr {
   max-width: 90vw;
   margin: 0 auto;
 }
 
-a:visited {
+.Projects a:visited {
   color: inherit;
 }
-a:hover {
+.Projects a:hover {
   color: inherit;
 }
-a:link {
+.Projects a:link {
   color: inherit;
 }
 
-a { 
+.Projects a { 
   text-decoration: none;
   color: inherit;
   outline: none;

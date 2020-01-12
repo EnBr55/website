@@ -64,3 +64,19 @@
     transform: rotate(360deg);
   }
 }
+
+.navbar a:visited {
+  color: inherit;
+}
+.navbar a:hover {
+  color: inherit;
+}
+.navbar a:link {
+  color: inherit;
+}
+
+.navbar a { 
+  text-decoration: none;
+  color: inherit;
+  outline: none;
+}
