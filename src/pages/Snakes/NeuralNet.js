@@ -58,7 +58,7 @@ let mutate = (dna, amount) => {
     for (let k = 0; k < dna[z].length; k++) {
       newDNA[z][k] = []
       for (let j = 0; j < dna[z][k].length; j++) {
-        newDNA[z][k][j] = Math.min(Math.max(dna[z][k][j] + Math.random() * amount - amount / 2, 0), 1)
+        newDNA[z][k][j] = Math.min(Math.max(dna[z][k][j] + Math.random() * amount - amount / 2, -1), 1)
       }
     }
   }

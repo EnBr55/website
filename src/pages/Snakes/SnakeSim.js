@@ -1,5 +1,13 @@
-import { mutate } from './NeuralNet'
-import { lineSnake, boxSnake, lineBox, colliding, removeElement } from './SimOperations'
+import { mutate, crossOver } from './NeuralNet'
+import {
+  lineSnake,
+  boxSnake,
+  lineBox,
+  colliding,
+  lineLine,
+  boxLine,
+  removeElement,
+} from './SimOperations'
 import Snake from './Snake'
 import Food from './Food'
 
@@ -7,14 +15,25 @@ export const SnakeSim = (p5) => {
   // WORLD VARIABLES
   let snakes = []
   let food = []
+  let walls = []
   let generation = 1
 
   // SIMULATION VARIABLES
-  let simulationSpeed = 30
+  let simulationSpeed = 1
   let windowDimensions = {
     width: p5.windowWidth / 1.3,
     height: p5.windowHeight / 1.3,
   }
+
+  const setWalls = () => { walls = [
+    { pos: { x: 0, y: 0 }, width: windowDimensions.width, height: 1 },
+    { pos: { x: 0, y: 0 }, width: 1, height: windowDimensions.height },
+    { pos: { x: 0, y: windowDimensions.height }, width: windowDimensions.width, height: 1 },
+    { pos: { x: windowDimensions.width, y: 0 }, width: 1, height: windowDimensions.height }
+  ] }
+
+  setWalls()
+
   let numSnakes = 15
   // initial snakes (random dna)
   for (let i = 0; i < numSnakes; i++) {
@@ -33,6 +52,7 @@ export const SnakeSim = (p5) => {
       width: p5.windowWidth / 1.3,
       height: p5.windowHeight / 1.3,
     }
+    setWalls()
   }
 
   p5.setup = () => {
@@ -40,15 +60,23 @@ export const SnakeSim = (p5) => {
     p5.frameRate(60)
   }
 
-  const snakeToFood = snake => {
+  p5.keyPressed = (value) => {
+    if (value.keyCode === 32) {
+      simulationSpeed = simulationSpeed === 1 ? 30 : 1
+    }
+  }
+
+  const snakeToFood = (snake) => {
     for (let segment of snake.segments) {
-      food.push(new Food(
-        segment.pos.x,
-        segment.pos.y,
-        segment.width,
-        segment.height,
-        snake.color
-      ))
+      food.push(
+        new Food(
+          segment.pos.x,
+          segment.pos.y,
+          segment.width,
+          segment.height,
+          snake.color,
+        ),
+      )
     }
   }
 
@@ -67,51 +95,63 @@ export const SnakeSim = (p5) => {
       headCheck: boxSnake,
       response: 1,
       call: (caller, other) => {
-        if (other.getActive() && roundTimer/60 > 2) {
+        // grace period
+        if (other.getActive() && roundTimer / 60 > 1) {
           caller.die()
-          snakeToFood(caller)
+          if (generation > 100) {
+            snakeToFood(other)
+          }
         }
       },
     },
-   {
-     target: food,
-     feelerCheck: lineBox,
-     headCheck: colliding,
-     response: -1,
-     call: (caller, other) => {
-       caller.feed(1)
-       removeElement(food, other)
-     }
-   }
+    {
+      target: food,
+      feelerCheck: lineBox,
+      headCheck: colliding,
+      response: 0,
+      call: (caller, other) => {
+        caller.feed(1)
+        removeElement(food, other)
+      },
+    },
+    {
+      target: walls,
+      feelerCheck: lineBox,
+      headCheck: colliding,
+      response: 1,
+      call: (caller, other) => {
+        caller.die()
+      },
+    },
   ]
 
   // takes array of array of snake objects coupled with fitness
   const sortSnakes = (array) => {
     function comparator(a, b) {
-      if (a[1] < b[1]) return -1;
-      if (a[1] > b[1]) return 1;
-      return 0;
+      if (a[1] < b[1]) return -1
+      if (a[1] > b[1]) return 1
+      return 0
     }
     let sorted = array
     sorted = sorted.sort(comparator)
     return sorted.reverse()
   }
 
-  const breed = pool => {
+  const breed = (pool) => {
     let sortedSnakes = sortSnakes(pool)
     let newSnakes = []
 
-    let numOldSnakes = Math.floor(numSnakes / 3)
+    let numOldSnakes = Math.floor(numSnakes / 2.5)
     let numNewSnakes = numSnakes - numOldSnakes
 
     for (let i = 0; i < numOldSnakes; i++) {
       // push parent back in with no mutations to DNA
       newSnakes.push(
         new Snake(
-          (Math.random() * windowDimensions.width) / 1.5,
-          (Math.random() * windowDimensions.height) / 1.5,
-          mutate(sortedSnakes[i][0].dna, 0)
-        )
+          (Math.random() * (windowDimensions.width - 50)) + 50,
+          (Math.random() * (windowDimensions.height - 50)) + 50,
+          mutate(sortedSnakes[i][0].dna, 0),
+        ),
       )
     }
 
@@ -119,10 +159,14 @@ export const SnakeSim = (p5) => {
       // parent creates a child with mutations to dna
       newSnakes.push(
         new Snake(
-          (Math.random() * windowDimensions.width) / 1.5,
-          (Math.random() * windowDimensions.height) / 1.5,
-          mutate(newSnakes[i % numOldSnakes].dna, Math.random() * 0.02)
-        )
+          (Math.random() * (windowDimensions.width - 50)) + 50,
+          (Math.random() * (windowDimensions.height - 50)) + 50,
+          crossOver(
+            newSnakes[i % numOldSnakes],
+            newSnakes[(i + 1) % numOldSnakes],
+            0.1,
+          ),
+        ),
       )
     }
     return newSnakes
@@ -136,7 +180,9 @@ export const SnakeSim = (p5) => {
     p5.background(15)
     p5.textSize(14)
 
-    alive = snakes.filter(t => t.getAlive()).length
+    //console.table([snakes[0].feelers[0].distance,snakes[0].feelers[1].distance,snakes[0].feelers[2].distance,snakes[0].feelers[3].distance,snakes[0].feelers[4].distance])
+
+    alive = snakes.filter((t) => t.getAlive()).length
     p5.noStroke()
     p5.fill('red')
     p5.text('Generation: ' + generation + ' | Alive: ' + alive, 5, 15)
@@ -160,23 +206,28 @@ export const SnakeSim = (p5) => {
       snakes = breed(oldSnakes)
       generation++
       roundTimer = 0
-      if (generation > 10) { simulationSpeed = 1}
+      if (generation > 100) {
+        simulationSpeed = 1
+      }
     }
 
     for (let i = 0; i < simulationSpeed; i++) {
       roundTimer++
       targets[0].target = snakes
       targets[1].target = food
+      targets[2].target = walls
       for (let snake of snakes) {
         if (snake.getShouldUpdate()) {
           if (simulationSpeed < 5) {
-          snake.draw(p5)
+            snake.draw(p5)
           }
           snake.update(windowDimensions, targets)
         }
       }
-      for (let morsel of food) {
-        morsel.draw(p5)
+      if (simulationSpeed < 5) {
+        for (let morsel of food) {
+          morsel.draw(p5)
+        }
       }
     }
   }
