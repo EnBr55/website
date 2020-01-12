@@ -1,16 +1,32 @@
 .Projects {
   font-size: large;
+  color: inherit;
 }
 
 .project {
-  background-color: rgba(0, 0, 190, 0.1);
-  margin: 0 auto;
+  background-color: rgba(60, 0, 160, 0.25);
+  margin: 1em auto;
   max-width: 45em;
-  padding-left: 1em;
-  padding-right: 1em;
+  padding: 0.01em 1em;
+  transition: box-shadow 0.3s ease;
+}
+
+.project:hover {
+  cursor: pointer;
+  box-shadow: 0px 0px 10px 5px rgba(250, 100, 100, 0.9);
+  transition: box-shadow 0.3s ease;
 }
 
 hr {
   max-width: 90vw;
   margin: 0 auto;
+}
+
+a:visited {
+  color: inherit;
+}
+
+a { 
+  text-decoration: none;
+  color: inherit;
 }

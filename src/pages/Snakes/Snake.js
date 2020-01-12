@@ -176,20 +176,6 @@ export default class Snake {
       this.vel.x = this.speed * Math.cos(this.dir)
       this.vel.y = this.speed * Math.sin(this.dir)
 
-      // Check walls
-      if (this.pos.x <= 0) {
-        this.vel.x = 0.1
-      }
-      if (this.pos.x >= windowDimensions.width - this.width) {
-        this.vel.x = -0.1
-      }
-      if (this.pos.y <= 0) {
-        this.vel.y = 0.1
-      }
-      if (this.pos.y >= windowDimensions.height - this.height) {
-        this.vel.y = -0.1
-      }
-
       this.pos.x += this.vel.x
       this.pos.y += this.vel.y
 

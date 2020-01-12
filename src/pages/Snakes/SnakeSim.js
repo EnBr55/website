@@ -99,7 +99,7 @@ export const SnakeSim = (p5) => {
         if (other.getActive() && roundTimer / 60 > 1) {
           caller.die()
           if (generation > 0) {
-            snakeToFood(other)
+            snakeToFood(caller)
           }
         }
       },

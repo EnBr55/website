@@ -7,6 +7,7 @@ const Snakes: React.FC = () => {
   return (
     <div className='snakes'>
       <P5Wrapper sketch={SnakeSim} />
+      <p>UI controls are in progress. For now, press space to toggle training.</p>
     </div>
   )
 }
