@@ -28,7 +28,7 @@ const Home: React.FC = () => {
         <h2>Technical Skills &#128295;</h2>
         <h3>Programming</h3>
         <h4>Preferred Languages</h4>
-        JavaScript, TypeScript, Python, Java, C, Bash, R, Lua.
+        JavaScript, TypeScript, Python, Java, Bash, R, Lua.
         <br />
         <br />
         <h4>Frameworks / Tools</h4>
@@ -65,7 +65,7 @@ const Home: React.FC = () => {
           ) can be found on <a href="https://github.com/EnBr55">my GitHub</a>.
         </p>
         <h2>Contact &#128075;</h2>
-        <p>I'd love to get in touch :)</p>
+        <p>I'd love to get in touch :-)</p>
         <p>
           Email: <a href="mailto:ben@benbraham.com">ben@benbraham.com</a>
           <br />
