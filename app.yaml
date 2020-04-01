@@ -12,10 +12,11 @@
 # limitations under the License.
 # [START app_yaml]
 # [START runtime]
-env: flex
-runtime: nodejs
+runtime: nodejs10
 # [END runtime]
 # [START handlers]
+manual_scaling:
+  instances: 1
 handlers:
   - url: /
     static_files: build/index.html
