@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Home from './pages/Home/Home'
 import Projects from './pages/Projects/Projects'
 import Snakes from './pages/Snakes/Snakes'
+import Plants from './pages/Plants/Plants'
 import Navbar from './components/Navbar/Navbar'
 import {ThemeContext, themes} from './contexts/ThemeContext' 
 
@@ -45,6 +46,9 @@ const App: React.FC = () => {
               </Route>
               <Route path='/snakes'>
                 <Snakes />
+              </Route>
+              <Route path='/plants'>
+                <Plants />
               </Route>
               <Route>
                 <div>
