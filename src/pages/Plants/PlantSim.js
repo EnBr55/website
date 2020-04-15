@@ -41,7 +41,7 @@ export const PlantSim = (p5) => {
     cellType = props.cellType
   }
 
-  p5.mouseClicked = (e) => {
+  const onMousePress = () => {
     if (Math.floor(p5.mouseX / cellSize) !== mousePos.x || Math.floor(p5.mouseY / cellSize) !== mousePos.y) {
       return
     }
@@ -62,6 +62,9 @@ export const PlantSim = (p5) => {
   }
 
   p5.draw = () => {
+    if (p5.mouseIsPressed) {
+      onMousePress()
+    }
     timer += 1
     p5.background('#abc')
     mousePos = {

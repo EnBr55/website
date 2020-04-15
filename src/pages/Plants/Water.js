@@ -15,6 +15,7 @@ export default class Water {
     let newCellPos = checkCell(worldSize, this.pos, {x: 0, y: 1})
     if (newCellPos !== null && world[newCellPos.x][newCellPos.y] === undefined) {
       updateWorld(world, timer, this, newCellPos)
+      this.reset()
     } 
     else {
       // first check random direction
@@ -22,7 +23,7 @@ export default class Water {
       if (newCellPos !== null && world[newCellPos.x][newCellPos.y] === undefined) {
         updateWorld(world, timer, this, newCellPos)
       } 
-      else if (this.wallsHit > Math.floor(Math.random() * 8 + 2)) {
+      else if (this.wallsHit > Math.floor(Math.random() * 50 + 2)) {
         if (newCellPos !== null) {
           this.direction = Math.sign(Math.random() * 2 - 1)
           this.updateInterval++
