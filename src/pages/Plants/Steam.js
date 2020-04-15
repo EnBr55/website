@@ -1,6 +1,6 @@
 import { checkCell, updateWorld } from './SimOperations'
-import Steam from './Steam'
-export default class Water {
+import Water from './Water'
+export default class Steam {
   constructor(x, y) {
     this.pos = {x: x, y: y}
     this.sync = 0
@@ -15,7 +15,7 @@ export default class Water {
   update(world, worldSize, timer, sunPos) {
     this.updateEnergy(world, sunPos)
     if (timer === this.sync || timer % this.updateInterval !== 0) return
-    let newCellPos = checkCell(worldSize, this.pos, {x: 0, y: 1})
+    let newCellPos = checkCell(worldSize, this.pos, {x: 0, y: -1})
     if (newCellPos !== null && world[newCellPos.x][newCellPos.y] === undefined) {
       updateWorld(world, timer, this, newCellPos)
       this.reset()
@@ -41,8 +41,8 @@ export default class Water {
   }
 
   updateEnergy(world, sunPos) {
-    if (this.pos.y > 0) {
-      if (world[this.pos.x][this.pos.y - 1] === undefined) {
+    if (this.pos.y < world.length) {
+      if (world[this.pos.x][this.pos.y + 1] === undefined) {
         this.sunAbsorbed += Math.max(sunPos, 0)
       }
     } else {
@@ -52,7 +52,7 @@ export default class Water {
     this.sunAbsorbed += Math.min(sunPos/4, 0)
     this.sunAbsorbed = Math.max(this.sunAbsorbed, 0)
     if (this.sunAbsorbed > 1500) {
-      world[this.pos.x][this.pos.y] = new Steam(this.pos.x, this.pos.y)
+      world[this.pos.x][this.pos.y] = new Water(this.pos.x, this.pos.y)
     }
   }
 
@@ -63,8 +63,8 @@ export default class Water {
   }
 
   draw(p5, cellSize) {
-    p5.stroke('#0033cc')
-    p5.fill('#0033cc')
+    p5.stroke('#887')
+    p5.fill('#887')
     // p5.stroke('white')
     p5.rect(this.pos.x * cellSize, this.pos.y*cellSize, cellSize, cellSize)
   }

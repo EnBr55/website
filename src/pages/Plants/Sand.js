@@ -39,8 +39,8 @@ export default class Sand {
   }
 
   draw(p5, cellSize) {
-    p5.stroke('yellow')
-    p5.fill('yellow')
+    p5.stroke('#855723')
+    p5.fill('#855723')
     // p5.stroke('white')
     p5.rect(this.pos.x * cellSize, this.pos.y*cellSize, cellSize, cellSize)
   }

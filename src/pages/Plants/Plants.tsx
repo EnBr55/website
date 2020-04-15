@@ -13,8 +13,9 @@ const Plants: React.FC = () => {
     <div className='snakes'>
       <P5Wrapper sketch={PlantSim} simSpeed={simSpeed} cellType={cellType}/>
       <div className='controls' >
-        <Button text='Sand' click={() => setCellType('sand')}/>
+        <Button text='Dirt' click={() => setCellType('sand')}/>
         <Button text='Water' click={() => setCellType('water')}/>
+        <Button text='Vapor' click={() => setCellType('steam')}/>
       </div>
     </div>
   )
