@@ -67,6 +67,8 @@ const Home: React.FC = () => {
         <h2>Contact &#128075;</h2>
         <p>I'd love to get in touch :-)</p>
         <p>
+          <b><i style={{color: '#604'}}>Je ne suis pas avocat.</i></b> Arrêtez de me téléphoner pour des conseils légaux s’il vous plaît.
+          <br />
           Email: <a href="mailto:ben@benbraham.com">ben@benbraham.com</a>
           <br />
           Mobile: +61 481 394 909
