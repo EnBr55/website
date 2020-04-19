@@ -1,4 +1,4 @@
-import { checkCell, updateWorld } from './SimOperations'
+import { checkCell, updateWorld, swapCells } from './SimOperations'
 import Water from './Water'
 export default class Steam {
   constructor(x, y) {
@@ -8,7 +8,7 @@ export default class Steam {
     this.transparencyActual = 0.25
     this.updateInterval = 2
     this.defaultUpdateInterval = 2
-    this.type = 'fluid'
+    this.type = 'gas'
     this.direction = Math.sign(Math.random() * 2 - 1)
     this.wallsHit = 0
     this.sunAbsorbed = 0
@@ -18,28 +18,35 @@ export default class Steam {
     this.updateEnergy(world, sunPos)
     if (timer === this.sync || timer % this.updateInterval !== 0) return
     let newCellPos = checkCell(worldSize, this.pos, {x: 0, y: -1})
-    if (newCellPos !== null && world[newCellPos.x][newCellPos.y] === undefined) {
-      updateWorld(world, timer, this, newCellPos)
-      this.reset()
-    } 
-    else {
-      // first check random direction
-      newCellPos = checkCell(worldSize, this.pos, {x: this.direction, y: 0})
-      if (newCellPos !== null && world[newCellPos.x][newCellPos.y] === undefined) {
+    let newCell
+    if (newCellPos !== null) {
+      newCell = world[newCellPos.x][newCellPos.y]
+      if (newCell === undefined) { 
         updateWorld(world, timer, this, newCellPos)
+        this.reset()
       } 
-      else if (this.wallsHit > Math.floor(Math.random() * 50 + 2)) {
-        if (newCellPos !== null) {
-          this.direction = Math.sign(Math.random() * 2 - 1)
-          this.updateInterval++
-          this.wallsHit = 0
-        }
+      else if (newCell.type === 'fluid') {
+        swapCells(world, this.pos, newCellPos)
       }
       else {
-        this.direction = Math.sign(Math.random() * 2 - 1)
-        this.wallsHit ++
+        // first check random direction
+        newCellPos = checkCell(worldSize, this.pos, {x: this.direction, y: 0})
+        if (newCellPos !== null && world[newCellPos.x][newCellPos.y] === undefined) {
+          updateWorld(world, timer, this, newCellPos)
+        } 
+        else if (this.wallsHit > Math.floor(Math.random() * 50 + 2)) {
+          if (newCellPos !== null) {
+            this.direction = Math.sign(Math.random() * 2 - 1)
+            this.updateInterval++
+            this.wallsHit = 0
+          }
+        }
+        else {
+          this.direction = Math.sign(Math.random() * 2 - 1)
+          this.wallsHit ++
+        }
       }
-    }
+    } 
   }
 
   updateEnergy(world, sunPos) {
