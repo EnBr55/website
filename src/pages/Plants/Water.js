@@ -4,6 +4,8 @@ export default class Water {
   constructor(x, y) {
     this.pos = {x: x, y: y}
     this.sync = 0
+    this.transparencyBase = 0.9
+    this.transparencyActual = 0.9
     this.updateInterval = 2
     this.defaultUpdateInterval = 2
     this.type = 'fluid'
@@ -38,16 +40,18 @@ export default class Water {
         this.wallsHit ++
       }
     }
+    this.sync = timer
   }
 
   updateEnergy(world, sunPos) {
-    if (this.pos.y > 0) {
-      if (world[this.pos.x][this.pos.y - 1] === undefined) {
-        this.sunAbsorbed += Math.max(sunPos, 0)
-      }
-    } else {
-      this.sunAbsorbed += Math.max(sunPos, 0)
-    }
+    //if (this.pos.y > 0) {
+      //if (world[this.pos.x][this.pos.y - 1] === undefined) {
+        //this.sunAbsorbed += Math.max(sunPos, 0)
+      //}
+    //} else {
+      //this.sunAbsorbed += Math.max(sunPos, 0)
+    //}
+    this.sunAbsorbed += Math.max(sunPos, 0) * this.transparencyBase === 0 ? 0 : this.transparencyActual / this.transparencyBase
     // lose some absorbed energy at night
     this.sunAbsorbed += Math.min(sunPos/4, 0)
     this.sunAbsorbed = Math.max(this.sunAbsorbed, 0)
@@ -63,8 +67,12 @@ export default class Water {
   }
 
   draw(p5, cellSize) {
-    p5.stroke('#0033cc')
-    p5.fill('#0033cc')
+    //p5.stroke('#0033cc')
+    //p5.fill('#0033cc')
+    //console.log(this.transparencyActual / this.transparencyBase)
+    let blue = this.transparencyActual
+    p5.fill(p5.color(0, 40, 220 * blue))
+    p5.stroke(p5.color(0, 40, 220 * blue))
     // p5.stroke('white')
     p5.rect(this.pos.x * cellSize, this.pos.y*cellSize, cellSize, cellSize)
   }

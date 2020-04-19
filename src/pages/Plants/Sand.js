@@ -1,8 +1,10 @@
-import { checkCell, updateWorld } from './SimOperations'
+import { checkCell, updateWorld, swapCells } from './SimOperations'
 export default class Sand {
   constructor(x, y) {
     this.pos = {x: x, y: y}
     this.sync = 0
+    this.transparencyBase = 0
+    this.transparencyActual = 0
     this.settled = false
     this.updateInterval = 2
     this.type = 'sand'
@@ -16,13 +18,7 @@ export default class Sand {
         updateWorld(world, timer, this, newCellPos)
       } 
       else if (world[newCellPos.x][newCellPos.y].type === 'fluid'){
-        // swap position with fluid cell
-        world[newCellPos.x][newCellPos.y].pos = this.pos
-        world[newCellPos.x][newCellPos.y].reset()
-        world[this.pos.x][this.pos.y] = world[newCellPos.x][newCellPos.y]
-        world[newCellPos.x][newCellPos.y] = this
-        this.pos = newCellPos
-        this.sync = timer
+        swapCells(world, this.pos, newCellPos)
       }
       else {
         // first check random direction
@@ -36,6 +32,7 @@ export default class Sand {
         }
       }
     } 
+    this.sync = timer
   }
 
   draw(p5, cellSize) {

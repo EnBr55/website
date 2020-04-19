@@ -70,7 +70,7 @@ export const PlantSim = (p5) => {
   }
 
   p5.draw = () => {
-    let sunPos = -1*Math.sin(timer/dayLength - Math.PI/2)
+    let sunPos = Math.sin((timer/dayLength + Math.PI/2))
     p5.background(50 + 80*(1-sunPos**2), 60 + 50*sunPos, 150 + (sunPos**2)*100 + sunPos*90)
     
     timer += 1
@@ -91,6 +91,20 @@ export const PlantSim = (p5) => {
       for (let inner in outer) {
         let cell = outer[outer.length - 1 - inner]
         if (cell) {
+          // transparency propagation
+          cell.transparencyActual = cell.transparencyBase
+          let sunDirection = Math.cos(timer/dayLength - Math.PI/2)
+          let newX = cell.pos.x + ((sunDirection > 0.45) ? 1 : (sunDirection < -0.45) ? -1 : 0)
+          let newY = cell.pos.y + ((sunDirection < 0.45 && sunDirection > -0.45) ? -1 : 0) - 1
+          if (newX < world.length && newX >= 0 && newY < world[0].length && newY >= 0) {
+            let newCell = world[newX][newY]
+            if (newCell && newCell !== cell) {
+              cell.transparencyActual = cell.transparencyBase * newCell.transparencyActual
+            }
+          } else {
+            cell.transparencyActual = cell.transparencyBase
+          }
+
           cell.update(world, worldSize, timer, sunPos)
           cell.draw(p5, cellSize)
         }

@@ -15,3 +15,14 @@ export const updateWorld = (world, timer, object, objectNewPos) => {
   world[objectNewPos.x][objectNewPos.y] = object
 }
 
+export const swapCells = (world, cell1, cell2) => {
+  const oldCell = world[cell1.x][cell1.y]
+  world[cell2.x][cell2.y].pos = world[cell1.x][cell1.y].pos
+  world[cell2.x][cell2.y].reset()
+  world[cell1.x][cell1.y] = world[cell2.x][cell2.y]
+  world[cell2.x][cell2.y] = oldCell
+  oldCell.pos = cell2
+}
+
+export const getTransparency = (world, direction) => {
+}

@@ -4,6 +4,8 @@ export default class Steam {
   constructor(x, y) {
     this.pos = {x: x, y: y}
     this.sync = 0
+    this.transparencyBase = 0.25
+    this.transparencyActual = 0.25
     this.updateInterval = 2
     this.defaultUpdateInterval = 2
     this.type = 'fluid'
