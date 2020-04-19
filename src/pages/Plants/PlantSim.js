@@ -9,7 +9,7 @@ export const PlantSim = (p5) => {
   let world = []
   let worldSize = 128
   let timer = 0
-  let dayLength = 3000
+  let dayLength = 1500
   let windowDimensions = {
     width: Math.min(p5.windowWidth / 1.3, p5.windowHeight / 1.3),
     height: Math.min(p5.windowWidth / 1.3, p5.windowHeight / 1.3),
