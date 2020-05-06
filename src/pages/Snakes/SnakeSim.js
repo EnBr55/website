@@ -33,7 +33,7 @@ export const SnakeSim = (p5) => {
 
   setWalls()
 
-  let numSnakes = 20
+  let numSnakes = 15
   // initial snakes (random dna)
   for (let i = 0; i < numSnakes; i++) {
     snakes.push(
@@ -102,7 +102,7 @@ export const SnakeSim = (p5) => {
         // grace period
         if (other.getActive() && roundTimer / 60 > 1) {
           caller.die()
-          if (generation > 0) {
+          if (false && generation > 40) {
             snakeToFood(caller)
           }
         }
@@ -112,7 +112,7 @@ export const SnakeSim = (p5) => {
       target: food,
       feelerCheck: lineBox,
       headCheck: colliding,
-      response: 0,
+      response: -1,
       call: (caller, other) => {
         caller.feed(caller.hunger.max / 4)
         removeElement(food, other)
@@ -149,18 +149,18 @@ export const SnakeSim = (p5) => {
     let numNewSnakes = numSnakes - numOldSnakes
 
     for (let i = 0; i < numOldSnakes; i++) {
-      // push parent back in with no mutations to DNA
+      // push parent back in with slight mutations to DNA
       newSnakes.push(
         new Snake(
           (Math.random() * (windowDimensions.width - 50)) + 50,
           (Math.random() * (windowDimensions.height - 50)) + 50,
-          mutate(sortedSnakes[i][0].dna, 0),
+          mutate(sortedSnakes[i][0].dna, 0.01),
         ),
       )
     }
 
     for (let i = 0; i < numNewSnakes; i++) {
-      // parent creates a child with mutations to dna
+      // parent creates a child with more extreme mutations to dna
       newSnakes.push(
         new Snake(
           (Math.random() * (windowDimensions.width - 50)) + 50,
@@ -168,7 +168,7 @@ export const SnakeSim = (p5) => {
           crossOver(
             newSnakes[i % numOldSnakes],
             newSnakes[(i + 1) % numOldSnakes],
-            0.15,
+            0.2,
           ),
         ),
       )
@@ -217,7 +217,7 @@ export const SnakeSim = (p5) => {
 
     for (let i = 0; i < simulationSpeed; i++) {
       roundTimer++
-      if (roundTimer % 180 === 0) {
+      if (false && roundTimer % 360 === 0 && generation > 40) {
         food.push(new Food(
           (Math.random() * (windowDimensions.width - 50)) + 50,
           (Math.random() * (windowDimensions.height - 50)) + 50,
@@ -227,6 +227,10 @@ export const SnakeSim = (p5) => {
         ))
           
       }
+      //snakes[0].color = [255, 255, 255]
+      //if (roundTimer % 10 === 0) {
+        //console.log(snakes[0].temp)
+      //}
       targets[0].target = snakes
       targets[1].target = food
       targets[2].target = walls

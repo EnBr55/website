@@ -9,6 +9,8 @@ export default class Snake {
     this.width = 15
     this.height = 15
 
+    this.temp = 0
+
     this.pos = { x: x, y: y }
     this.vel = { x: 0, y: 0 }
     this.speed = 1
@@ -23,8 +25,8 @@ export default class Snake {
     this.shouldUpdate = true
     this.showEyes = false
 
-    this.numFeelers = 7
-    this.feelerLength = 400
+    this.numFeelers = 3
+    this.feelerLength = 200
     this.feelers = []
     for (let i = 1; i < this.numFeelers + 1; i++) {
       // Divide a semicircle in n+1 equal section with n lines (feelers)
@@ -42,7 +44,7 @@ export default class Snake {
           this.height / 2 +
           this.feelerLength * Math.sin(this.dir - angle),
         distance: 1,
-        value: 0.5,
+        value: 0.0,
       })
     }
 
@@ -67,7 +69,7 @@ export default class Snake {
     this.dna = dna
     if (!this.dna) {
       // [input nodes, hidden layer 1, hidden layer 2, output nodes, genes]
-      this.dna = matrixConstructor(this.numFeelers * 2 + 2, 64, 64, 2, 3)
+      this.dna = matrixConstructor(this.numFeelers * 1, 16, 16, 2, 3)
     }
     this.genes = this.dna[6][0]
     this.color = [
@@ -109,13 +111,17 @@ export default class Snake {
 
   checkFeelers(group, check, response) {
     for (let feeler of this.feelers) {
+      let minDist = Infinity
       for (let body of group) {
         if (body !== this) {
           let distance = check(feeler, body)
           if (distance) {
             if (distance / this.feelerLength < 1) {
-              feeler.distance = distance / (this.height + this.feelerLength)
-              feeler.value = response
+              feeler.distance = (1 - distance / (this.height + this.feelerLength))**2
+              if (distance < minDist) { 
+                minDist = distance
+                feeler.value = response
+              }
             }
             this.color[3] = 200
           }
@@ -148,14 +154,13 @@ export default class Snake {
       let inputs = []
       for (let feeler of this.feelers) {
         inputs.push([feeler.distance])
-        inputs.push([feeler.value])
+        //inputs.push([feeler.value])
+        // inputs.push([feeler.value])
       }
-      inputs.push([this.hunger.current / this.hunger.max])
-      inputs.push([this.hunger.current / this.hunger.max])
       let outputs = this.brain.feedforward(inputs)
 
       if (outputs[1]) {
-        this.speed = 2 + outputs[1] * 1
+        this.speed = 2 + outputs[1] ** 2
       }
 
       /* if the feelers can't see anything, just go in a random direction
@@ -166,6 +171,7 @@ export default class Snake {
         this.dir += Math.random() * 0.25 - 0.125
       } else if (outputs[0]) {
         this.dir += outputs[0] * 0.09
+        this.temp = outputs[0]
         this.hunger.current += Math.abs(outputs[0]**3) * 0.1
       }
 
@@ -202,7 +208,7 @@ export default class Snake {
       this.color[3] = 80
       for (let feeler of this.feelers) {
         feeler.distance = 1
-        feeler.value = 0.5
+        feeler.value = 0.0
       }
 
       for (let obj of world) {

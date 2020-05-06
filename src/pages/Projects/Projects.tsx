@@ -13,7 +13,7 @@ const Projects: React.FC = () => {
           <h2>Snakes</h2>
           <img src={snakesGIF} alt='an animated GIF of the snakes' />
           <p>Primitive 'snakes' that evolve through neuroevolution. Each snake has its own neural network, initially with completely random weights and biases. After each generation, the longest living snakes are selected and mutated slightly to create a new generation of snakes. Over time, snakes typically learn to avoid collisions with each other and the walls. Additionally, food is placed periodically within the walls of the simulation; and snakes that die from a collision with another snake will also turn into food. After significant evolution and a bit of luck, the snakes should learn to differentiate between food and foe.</p>
-          <p>More advanced simulation controls and a selector for initial conditions are coming soon.</p>
+          <p>Food currently disabled until I get time to fix some issues with the simulation.</p>
         </Link>
       </div>
       <hr />
