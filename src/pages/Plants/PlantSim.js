@@ -1,3 +1,4 @@
+import Air from './Air'
 import Sand from './Sand'
 import Water from './Water'
 import Steam from './Steam'
@@ -5,7 +6,10 @@ export const PlantSim = (p5) => {
   // props
   let simulationSpeed
   let cellType
+  let avg = 0
+  let render = true
 
+  let activeCells = 0
   let world = []
   let worldSize = 128
   let timer = 0
@@ -19,12 +23,12 @@ export const PlantSim = (p5) => {
 
   p5.setup = () => {
     p5.createCanvas(windowDimensions.width, windowDimensions.height)
-    p5.frameRate(60)
+    p5.frameRate(144)
     simulationSpeed = 1
     for (let i = 0; i < worldSize; i++) {
       world.push([])
       for (let j = 0; j < worldSize; j++) {
-        world[i].push(undefined)
+        world[i].push(new Air(i, j))
       }
     }
   }
@@ -44,12 +48,12 @@ export const PlantSim = (p5) => {
   }
 
   const onMousePress = () => {
-    if (
-      Math.floor(p5.mouseX / cellSize) !== mousePos.x ||
-      Math.floor(p5.mouseY / cellSize) !== mousePos.y
-    ) {
-      return
-    }
+    //if (
+      //Math.floor(p5.mouseX / cellSize) !== mousePos.x ||
+      //Math.floor(p5.mouseY / cellSize) !== mousePos.y
+    //) {
+      //return
+    //}
     let clickedPos = mousePos
     let newCell
     switch (cellType) {
@@ -107,10 +111,13 @@ export const PlantSim = (p5) => {
     )
 
     for (let i = 0; i < simulationSpeed; i++) {}
+    let cell
+    //console.log('Active Cells: '+activeCells)
+    activeCells = 0
     for (let outer in world) {
-    let transparencyNoise = (1 - Math.random() * 0.03)
       for (let inner in world[outer]) {
-        let cell = world[outer][world[outer].length - 1 - inner]
+        let transparencyNoise = (1 - Math.random() * 0.0005)
+        cell = world[outer][world[outer].length - 1 - inner]
         if (cell) {
           // transparency propagation
 
@@ -129,10 +136,27 @@ export const PlantSim = (p5) => {
             cell.transparencyActual = cell.transparencyBase
           }
 
-          cell.update(world, worldSize, timer, sunPos)
-          cell.draw(p5, cellSize)
+          if(cell.needsUpdate) {
+            cell.update(world, worldSize, timer, sunPos)
+            activeCells++
+          }
+          render && cell.draw(p5, cellSize)
         }
       }
+    }
+    if (timer % 1 === 0) {
+      avg += Math.round(p5.getFrameRate())
+    }
+    if (timer % 60 === 0) {
+      console.log(Math.round(avg / 60))
+      avg = 0
+    }
+  }
+
+  p5.keyPressed = (a) => {
+    console.log(a.code)
+    if (a.code === "Space") {
+      render = !render
     }
   }
 }

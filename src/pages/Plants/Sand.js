@@ -1,12 +1,15 @@
 import { checkCell, updateWorld, swapCells } from './SimOperations'
-export default class Sand {
+import Air from './Air'
+export default class Sand extends Air{
   constructor(x, y) {
+    super(x, y)
     this.pos = {x: x, y: y}
     this.sync = 0
     this.transparencyBase = 0.35
     this.transparencyActual = 0.35
     this.settled = false
     this.updateInterval = 2
+    this.needsUpdate = true
     this.type = 'sand'
   }
 
@@ -16,7 +19,7 @@ export default class Sand {
     let newCell
     if (newCellPos !== null) {
       newCell = world[newCellPos.x][newCellPos.y]
-      if (newCell === undefined) {
+      if (newCell.type === 'air') {
         updateWorld(world, timer, this, newCellPos)
       } 
       else if (newCell.type === 'fluid' || newCell.type === 'gas'){
@@ -30,13 +33,13 @@ export default class Sand {
           newCell = world[newCellPos.x][newCellPos.y]
         }
 
-        if (!this.settled && newCellPos !== null && newCell === undefined) {
+        if (!this.settled && newCellPos !== null && newCell.type === 'air') {
           updateWorld(world, timer, this, newCellPos)
         } else {
-          this.settled = true
+          this.needsUpdate = false
         }
       }
-    } 
+    } else { this.needsUpdate = false }
     this.sync = timer
   }
 

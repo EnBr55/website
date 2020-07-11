@@ -1,13 +1,16 @@
 import { checkCell, updateWorld, swapCells } from './SimOperations'
 import Water from './Water'
-export default class Steam {
+import Air from './Air'
+export default class Steam extends Air{
   constructor(x, y) {
+    super(x, y)
     this.pos = {x: x, y: y}
     this.sync = 0
-    this.transparencyBase = 0.25
-    this.transparencyActual = 0.25
+    this.transparencyBase = 0.70
+    this.transparencyActual = 0.70
     this.updateInterval = 2
     this.defaultUpdateInterval = 2
+    this.needsUpdate = true
     this.type = 'gas'
     this.direction = Math.sign(Math.random() * 2 - 1)
     this.wallsHit = 0
@@ -21,7 +24,7 @@ export default class Steam {
     let newCell
     if (newCellPos !== null) {
       newCell = world[newCellPos.x][newCellPos.y]
-      if (newCell === undefined) { 
+      if (newCell.type === 'air') { 
         updateWorld(world, timer, this, newCellPos)
         this.reset()
       } 
@@ -31,7 +34,7 @@ export default class Steam {
       else {
         // first check random direction
         newCellPos = checkCell(worldSize, this.pos, {x: this.direction, y: 0})
-        if (newCellPos !== null && world[newCellPos.x][newCellPos.y] === undefined) {
+        if (newCellPos !== null && world[newCellPos.x][newCellPos.y].type  === 'air') {
           updateWorld(world, timer, this, newCellPos)
         } 
         else if (this.wallsHit > Math.floor(Math.random() * 50 + 2)) {
@@ -51,7 +54,7 @@ export default class Steam {
 
   updateEnergy(world, sunPos) {
     if (this.pos.y < world.length) {
-      if (world[this.pos.x][this.pos.y + 1] === undefined) {
+      if (this.pos.y < (world.length-1) && world[this.pos.x][this.pos.y + 1].type === 'air') {
         this.sunAbsorbed += Math.max(sunPos, 0)
       }
     } else {
