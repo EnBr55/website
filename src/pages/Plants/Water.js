@@ -15,10 +15,13 @@ export default class Water extends Air {
     this.direction = Math.sign(Math.random() * 2 - 1)
     this.wallsHit = 0
     this.sunAbsorbed = 0
+    this.color = [0, 40, 220]
   }
 
   update(world, worldSize, timer, sunPos) {
     this.updateEnergy(world, sunPos)
+    let blue = this.transparencyActual
+    this.color[2] = 220 * blue
     if (timer === this.sync || timer % this.updateInterval !== 0) return
     let newCellPos = checkCell(worldSize, this.pos, {x: 0, y: 1})
     if (newCellPos !== null && world[newCellPos.x][newCellPos.y].type === 'air') {
@@ -73,9 +76,8 @@ export default class Water extends Air {
     //p5.stroke('#0033cc')
     //p5.fill('#0033cc')
     //console.log(this.transparencyActual / this.transparencyBase)
-    let blue = this.transparencyActual
-    p5.fill(p5.color(0, 40, 220 * blue))
-    p5.stroke(p5.color(0, 40, 220 * blue))
+    p5.fill(this.color)
+    p5.stroke(this.color)
     // p5.stroke('white')
     p5.rect(this.pos.x * cellSize, this.pos.y*cellSize, cellSize, cellSize)
   }

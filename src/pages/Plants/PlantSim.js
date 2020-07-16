@@ -6,12 +6,10 @@ export const PlantSim = (p5) => {
   // props
   let simulationSpeed
   let cellType
-  let avg = 0
-  let render = true
 
   let activeCells = 0
   let world = []
-  let worldSize = 128
+  let worldSize = 150
   let timer = 0
   let dayLength = 1500
   let windowDimensions = {
@@ -21,9 +19,13 @@ export const PlantSim = (p5) => {
   let cellSize = windowDimensions.width / worldSize
   let mousePos = { x: 0, y: 0 }
 
+  let pixelsHorizontal
+  let cellWidth
+
   p5.setup = () => {
+    p5.pixelDensity(1)
     p5.createCanvas(windowDimensions.width, windowDimensions.height)
-    p5.frameRate(144)
+    p5.frameRate(60)
     simulationSpeed = 1
     for (let i = 0; i < worldSize; i++) {
       world.push([])
@@ -31,6 +33,11 @@ export const PlantSim = (p5) => {
         world[i].push(new Air(i, j))
       }
     }
+    p5.loadPixels()
+    // number of pixels in one row
+    pixelsHorizontal = Math.sqrt(p5.pixels.length / 4)
+    //pixelsHorizontal = windowDimensions.width
+    cellWidth = pixelsHorizontal / worldSize
   }
 
   p5.windowResized = () => {
@@ -40,6 +47,8 @@ export const PlantSim = (p5) => {
     }
     p5.resizeCanvas(windowDimensions.width, windowDimensions.height)
     cellSize = windowDimensions.width / worldSize
+    pixelsHorizontal = Math.sqrt(p5.pixels.length / 4)
+    cellWidth = pixelsHorizontal / worldSize
   }
 
   p5.myCustomRedrawAccordingToNewPropsHandler = (props) => {
@@ -71,6 +80,24 @@ export const PlantSim = (p5) => {
         break
     }
     world[clickedPos.x][clickedPos.y] = newCell
+  }
+
+  const drawPixel = (color, xpos, ypos) => {
+    //p5.pixels[pixelsHorizontal*4 - 3] = 255
+    //p5.pixels[pixelsHorizontal*4*Math.floor(cellWidth*127) + 4*(Math.floor(cellWidth*127))] = 255
+    let firstIndex = Math.floor(pixelsHorizontal*4*Math.floor(cellWidth*ypos) + 4*(Math.floor(cellWidth*xpos)))
+    let index
+    for (let i = 0; i < cellWidth; i++) {
+      for (let j = 0; j < cellWidth; j++) {
+        index = firstIndex + i*pixelsHorizontal*4 + j*4
+        //index = firstIndex + i*cellWidth
+        p5.pixels[index] = color[0]
+        p5.pixels[index + 1] = color[1]
+        p5.pixels[index + 2] = color[2]
+        // default to max alpha
+        p5.pixels[index + 3] = 255
+      }
+    }
   }
 
   p5.draw = () => {
@@ -114,6 +141,7 @@ export const PlantSim = (p5) => {
     let cell
     //console.log('Active Cells: '+activeCells)
     activeCells = 0
+    p5.loadPixels()
     for (let outer in world) {
       for (let inner in world[outer]) {
         let transparencyNoise = (1 - Math.random() * 0.0005)
@@ -140,23 +168,22 @@ export const PlantSim = (p5) => {
             cell.update(world, worldSize, timer, sunPos)
             activeCells++
           }
-          render && cell.draw(p5, cellSize)
+          if(cell.type !== 'air') {
+            drawPixel(cell.color, cell.pos.x, cell.pos.y)
+          }
+          //render && cell.draw(p5, cellSize)
         }
       }
     }
-    if (timer % 1 === 0) {
-      avg += Math.round(p5.getFrameRate())
-    }
-    if (timer % 60 === 0) {
-      console.log(Math.round(avg / 60))
-      avg = 0
-    }
+    p5.updatePixels()
   }
 
   p5.keyPressed = (a) => {
     console.log(a.code)
     if (a.code === "Space") {
-      render = !render
+      //render = !render
+      console.log(p5.pixels)
+      console.log(windowDimensions.width, pixelsHorizontal, cellWidth)
     }
   }
 }

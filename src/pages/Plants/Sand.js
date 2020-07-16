@@ -11,6 +11,7 @@ export default class Sand extends Air{
     this.updateInterval = 2
     this.needsUpdate = true
     this.type = 'sand'
+    this.color = [133, 87, 35]
   }
 
   update(world, worldSize, timer) {
@@ -44,8 +45,8 @@ export default class Sand extends Air{
   }
 
   draw(p5, cellSize) {
-    p5.stroke('#855723')
-    p5.fill('#855723')
+    p5.stroke(this.color)
+    p5.fill(this.color)
     // p5.stroke('white')
     p5.rect(this.pos.x * cellSize, this.pos.y*cellSize, cellSize, cellSize)
   }

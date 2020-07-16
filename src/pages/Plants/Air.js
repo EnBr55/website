@@ -6,6 +6,7 @@ export default class Air {
     this.transparencyActual = 1
     this.needsUpdate = false
     this.type = 'air'
+    this.color = [0, 0, 0]
   }
 
   update(world, worldSize, timer) {
