@@ -6,16 +6,16 @@ export default class Water extends Air {
     super(x, y)
     this.pos = {x: x, y: y}
     this.sync = 0
-    this.transparencyBase = 0.9
-    this.transparencyActual = 0.9
+    this.transparencyBase = 0.95
+    this.transparencyActual = 0.95
     this.updateInterval = 2
-    this.defaultUpdateInterval = 2
     this.needsUpdate = true
     this.type = 'fluid'
     this.direction = Math.sign(Math.random() * 2 - 1)
     this.wallsHit = 0
     this.sunAbsorbed = 0
     this.color = [0, 40, 220]
+    this.wetness = 1
   }
 
   update(world, worldSize, timer, sunPos) {
@@ -24,26 +24,31 @@ export default class Water extends Air {
     this.color[2] = 220 * blue
     if (timer === this.sync || timer % this.updateInterval !== 0) return
     let newCellPos = checkCell(worldSize, this.pos, {x: 0, y: 1})
-    if (newCellPos !== null && world[newCellPos.x][newCellPos.y].type === 'air') {
-      updateWorld(world, timer, this, newCellPos)
-      this.reset()
-    } 
-    else {
-      // first check random direction
-      newCellPos = checkCell(worldSize, this.pos, {x: this.direction, y: 0})
-      if (newCellPos !== null && world[newCellPos.x][newCellPos.y].type === 'air') {
+    if (newCellPos !== null) {
+      let newCell = world[newCellPos.x][newCellPos.y]
+      if (newCell.type === 'air') {
         updateWorld(world, timer, this, newCellPos)
-      } 
-      //else if (this.wallsHit > Math.floor(Math.random() * 50 + 2)) {
-        //if (newCellPos !== null) {
-          //this.direction = Math.sign(Math.random() * 2 - 1)
-          //this.updateInterval++
-          //this.wallsHit = 0
-        //}
-      //}
+      }
+      else if (newCell.type === 'sand' && Math.random() < 0.05) {
+        if (newCell.wetness <= 0.9) {
+          newCell.wetness += 0.1
+          newCell.needsUpdate = true
+          this.wetness -= 0.1
+          if (this.wetness < 0.1) {
+            world[this.pos.x][this.pos.y] = new Air(this.pos.x, this.pos.y)
+          }
+        }
+      }
+
       else {
-        this.direction = this.direction * -1
-        //this.wallsHit ++
+        // first check random direction
+        newCellPos = checkCell(worldSize, this.pos, {x: this.direction, y: 0})
+        if (newCellPos !== null && world[newCellPos.x][newCellPos.y].type === 'air') {
+          updateWorld(world, timer, this, newCellPos)
+        } 
+        else {
+          this.direction = this.direction * -1
+        }
       }
     }
     this.sync = timer
@@ -67,9 +72,6 @@ export default class Water extends Air {
   }
 
   reset = () => {
-    this.wallsHit = 0
-    this.updateInterval = this.defaultUpdateInterval
-    this.direction = Math.sign(Math.random() * 2 - 1)
   }
 
   draw(p5, cellSize) {

@@ -6,8 +6,8 @@ export default class Steam extends Air{
     super(x, y)
     this.pos = {x: x, y: y}
     this.sync = 0
-    this.transparencyBase = 0.70
-    this.transparencyActual = 0.70
+    this.transparencyBase = 0.98
+    this.transparencyActual = 0.98
     this.updateInterval = 2
     this.defaultUpdateInterval = 2
     this.needsUpdate = true
@@ -15,38 +15,38 @@ export default class Steam extends Air{
     this.direction = Math.sign(Math.random() * 2 - 1)
     this.wallsHit = 0
     this.sunAbsorbed = 0
+    this.color = [150, 150, 150]
   }
 
   update(world, worldSize, timer, sunPos) {
     this.updateEnergy(world, sunPos)
     if (timer === this.sync || timer % this.updateInterval !== 0) return
-    let newCellPos = checkCell(worldSize, this.pos, {x: 0, y: -1})
+    let newCellPos = checkCell(worldSize, this.pos, {x: 0, y: Math.round(Math.random() -1.4)})
     let newCell
     if (newCellPos !== null) {
       newCell = world[newCellPos.x][newCellPos.y]
       if (newCell.type === 'air') { 
         updateWorld(world, timer, this, newCellPos)
-        this.reset()
+        if (Math.round(Math.random() - 0.3)) {
+          this.reset()
+        }
       } 
       else if (newCell.type === 'fluid') {
         swapCells(world, this.pos, newCellPos)
       }
       else {
+        if (newCell.type === 'gas') {
+          if (Math.round(Math.random())) {
+            this.updateInterval++
+          }
+        }
         // first check random direction
-        newCellPos = checkCell(worldSize, this.pos, {x: this.direction, y: 0})
+        newCellPos = checkCell(worldSize, this.pos, {x: this.direction, y: Math.round(Math.random() * 2 - 1)})
         if (newCellPos !== null && world[newCellPos.x][newCellPos.y].type  === 'air') {
           updateWorld(world, timer, this, newCellPos)
         } 
-        else if (this.wallsHit > Math.floor(Math.random() * 50 + 2)) {
-          if (newCellPos !== null) {
-            this.direction = Math.sign(Math.random() * 2 - 1)
-            this.updateInterval++
-            this.wallsHit = 0
-          }
-        }
         else {
           this.direction = Math.sign(Math.random() * 2 - 1)
-          this.wallsHit ++
         }
       }
     } 

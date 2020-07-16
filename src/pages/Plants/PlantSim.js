@@ -10,8 +10,8 @@ export const PlantSim = (p5) => {
   let activeCells = 0
   let world = []
   let worldSize = 150
-  let timer = 0
-  let dayLength = 1500
+  let timer = -2000
+  let dayLength = 5000
   let windowDimensions = {
     width: Math.min(p5.windowWidth / 1.3, p5.windowHeight / 1.3),
     height: Math.min(p5.windowWidth / 1.3, p5.windowHeight / 1.3),
@@ -30,7 +30,11 @@ export const PlantSim = (p5) => {
     for (let i = 0; i < worldSize; i++) {
       world.push([])
       for (let j = 0; j < worldSize; j++) {
-        world[i].push(new Air(i, j))
+        if (j > worldSize/1.05) {
+          world[i].push(new Sand(i, j))
+        } else {
+          world[i].push(new Air(i, j))
+        }
       }
     }
     p5.loadPixels()
@@ -144,7 +148,7 @@ export const PlantSim = (p5) => {
     p5.loadPixels()
     for (let outer in world) {
       for (let inner in world[outer]) {
-        let transparencyNoise = (1 - Math.random() * 0.0005)
+        let transparencyNoise = (1 - Math.random() * 0.001)
         cell = world[outer][world[outer].length - 1 - inner]
         if (cell) {
           // transparency propagation
