@@ -6,8 +6,8 @@ export default class Water extends Air {
     super(x, y)
     this.pos = {x: x, y: y}
     this.sync = 0
-    this.transparencyBase = 0.95
-    this.transparencyActual = 0.95
+    this.transparencyBase = 0.93
+    this.transparencyActual = 0.93
     this.updateInterval = 2
     this.needsUpdate = true
     this.type = 'fluid'
