@@ -2,6 +2,8 @@ import Air from './Air'
 import Sand from './Sand'
 import Water from './Water'
 import Steam from './Steam'
+import Root from './Root'
+import Plant from './Plant'
 export const PlantSim = (p5) => {
   // props
   let simulationSpeed
@@ -78,6 +80,12 @@ export const PlantSim = (p5) => {
         break
       case 'steam':
         newCell = new Steam(clickedPos.x, clickedPos.y)
+        break
+      case 'root':
+        newCell = new Root(clickedPos.x, clickedPos.y)
+        break
+      case 'plant':
+        newCell = new Plant(clickedPos.x, clickedPos.y)
         break
       default:
         newCell = new Sand(clickedPos.x, clickedPos.y)

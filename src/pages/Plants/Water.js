@@ -8,7 +8,7 @@ export default class Water extends Air {
     this.sync = 0
     this.transparencyBase = 0.93
     this.transparencyActual = 0.93
-    this.updateInterval = 2
+    this.updateInterval = 1
     this.needsUpdate = true
     this.type = 'fluid'
     this.direction = Math.sign(Math.random() * 2 - 1)

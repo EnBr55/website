@@ -1,6 +1,6 @@
 import { checkCell, updateWorld, swapCells } from './SimOperations'
 import Air from './Air'
-export default class Sand extends Air{
+export default class Sand extends Air {
   constructor(x, y) {
     super(x, y)
     this.pos = {x: x, y: y}
@@ -8,7 +8,7 @@ export default class Sand extends Air{
     this.transparencyBase = 0.35
     this.transparencyActual = 0.35
     this.settled = false
-    this.updateInterval = 2
+    this.updateInterval = 1
     this.needsUpdate = true
     this.type = 'sand'
     this.baseRed = 133 + Math.random() * 10 - 5
