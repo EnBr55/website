@@ -33,7 +33,7 @@ export default class Water extends Air {
         if (newCell.wetness <= 0.9) {
           newCell.wetness += 0.1
           newCell.needsUpdate = true
-          this.wetness -= 0.1
+          this.wetness -= 0.05
           if (this.wetness < 0.1) {
             world[this.pos.x][this.pos.y] = new Air(this.pos.x, this.pos.y)
           }
@@ -66,7 +66,7 @@ export default class Water extends Air {
     // lose some absorbed energy at night
     this.sunAbsorbed += Math.min(sunPos/4, 0)
     this.sunAbsorbed = Math.max(this.sunAbsorbed, 0)
-    if (this.sunAbsorbed > 2000) {
+    if (this.sunAbsorbed > 8000) {
       world[this.pos.x][this.pos.y] = new Steam(this.pos.x, this.pos.y)
     }
   }

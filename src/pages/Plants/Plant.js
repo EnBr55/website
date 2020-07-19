@@ -39,7 +39,7 @@ export default class Plant extends Air {
       let cell = checkCell(worldSize, this.pos, newPos)
       if (cell !== null && world[cell.x][cell.y].type === 'air') {
         if (this.energy > 0.5 && this.wetness > 0.5) {
-          this.spreadPlant(world, {x: this.pos.x + newPos.x, y: this.pos.y + newPos.y})
+          this.spreadPlant(world, {x: this.pos.x + newPos.x, y: this.pos.y + newPos.y}, timer)
         }
       }
     }
@@ -47,8 +47,9 @@ export default class Plant extends Air {
     this.sync = timer
   }
 
-  spreadPlant(world, newPos) {
+  spreadPlant(world, newPos, timer) {
     world[newPos.x][newPos.y] = new Plant(newPos.x, newPos.y)
+    world[newPos.x][newPos.y].sync = timer
     world[newPos.x][newPos.y].plantId = this.plantId
     //this.wetness -= 0.5
     this.energy -= 0.5

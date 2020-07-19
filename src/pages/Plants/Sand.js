@@ -17,20 +17,26 @@ export default class Sand extends Air {
   }
 
   update(world, worldSize, timer) {
+    this.color[0] = this.baseRed - 40 * this.wetness
+    this.color[1] = 87 - 50 * this.wetness
+    this.color[2] = 35 - 20 * this.wetness
     if (timer === this.sync || timer % this.updateInterval !== 0) return
     if (this.wetness > 0) {
-      this.color[0] = this.baseRed - 40 * this.wetness
-      this.color[1] = 87 - 50 * this.wetness
-      this.color[2] = 35 - 20 * this.wetness
-      // attempt to spread wetness every 60 ticks
-      if (timer % 30 === 0 && this.wetness > 0.3) {
+      // attempt to spread wetness every 30 ticks
+      if (timer % 30 === 0 && this.wetness > 0.1) {
         let spreadCellPos = checkCell(worldSize, this.pos, {x: Math.round(Math.random() * 2 - 1), y: Math.round(Math.random() * 2 - 1)})
         if (spreadCellPos !== null) {
           let spreadCell = world[spreadCellPos.x][spreadCellPos.y]
-          if (spreadCell.type === 'sand' && spreadCell.wetness < 0.5) {
+          if (spreadCell.type === 'sand' && spreadCell.wetness < this.wetness) {
             spreadCell.wetness += 0.1
             spreadCell.needsUpdate = true
             this.wetness -= 0.1
+          }
+          else if (spreadCell.type === 'root') {
+            console.log('yes')
+            spreadCell.wetness += 0.2
+            spreadCell.needsUpdate = true
+            this.wetness -= 0.2
           }
         }
       }
@@ -44,7 +50,7 @@ export default class Sand extends Air {
       } 
       else {
         if (newCell.type === 'fluid' || newCell.type === 'gas'){
-          swapCells(world, this.pos, newCellPos)
+          swapCells(world, this.pos, newCellPos, timer)
         } 
         else {
           // first check random direction
@@ -58,7 +64,7 @@ export default class Sand extends Air {
             updateWorld(world, timer, this, newCellPos)
           } 
           else {
-            if (this.wetness <= 0.3) {
+            if (this.wetness <= 0.1) {
               this.needsUpdate = false
             }
           }

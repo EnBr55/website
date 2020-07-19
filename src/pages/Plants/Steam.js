@@ -32,7 +32,7 @@ export default class Steam extends Air{
         }
       } 
       else if (newCell.type === 'fluid') {
-        swapCells(world, this.pos, newCellPos)
+        swapCells(world, this.pos, newCellPos, timer)
       }
       else {
         if (newCell.type === 'gas') {
@@ -63,7 +63,7 @@ export default class Steam extends Air{
     // lose some absorbed energy at night
     this.sunAbsorbed += Math.min(sunPos/4, 0)
     this.sunAbsorbed = Math.max(this.sunAbsorbed, 0)
-    if (this.sunAbsorbed > 1500) {
+    if (this.sunAbsorbed > 7500) {
       world[this.pos.x][this.pos.y] = new Water(this.pos.x, this.pos.y)
     }
   }
