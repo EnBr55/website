@@ -24,9 +24,8 @@ export default class Sand extends Air {
     if (this.wetness > 0) {
       // attempt to spread wetness every 30 ticks
       if (timer % 30 === 0 && this.wetness > 0.1) {
-        let spreadCellPos = checkCell(worldSize, this.pos, {x: Math.round(Math.random() * 2 - 1), y: Math.round(Math.random() * 2 - 1)})
-        if (spreadCellPos !== null) {
-          let spreadCell = world[spreadCellPos.x][spreadCellPos.y]
+        let spreadCell = checkCell(world, this.pos, {x: Math.round(Math.random() * 2 - 1), y: Math.round(Math.random() * 2 - 1)})
+        if (spreadCell !== null) {
           if (spreadCell.type === 'sand' && spreadCell.wetness < this.wetness) {
             spreadCell.wetness += 0.1
             spreadCell.needsUpdate = true
@@ -41,39 +40,33 @@ export default class Sand extends Air {
         }
       }
     }
-    let newCellPos = checkCell(worldSize, this.pos, {x: 0, y: 1})
-    let newCell
-    if (newCellPos !== null) {
-      newCell = world[newCellPos.x][newCellPos.y]
+    let newCell = checkCell(world, this.pos, {x: 0, y: 1})
+    if (newCell !== null) {
       if (newCell.type === 'air') {
-        updateWorld(world, timer, this, newCellPos)
+        updateWorld(world, timer, this, newCell.pos)
       } 
       else {
         if (newCell.type === 'fluid' || newCell.type === 'gas'){
-          swapCells(world, this.pos, newCellPos, timer)
+          swapCells(world, this.pos, newCell.pos, timer)
           // if there is more sand above new position, try move to the side instead
-          let secondCheckPos = checkCell(worldSize, newCell.pos, {x: 0, y: - 1})
-          if (secondCheckPos && world[secondCheckPos.x][secondCheckPos.y].type == 'sand') {
-            let moveLeftPos = checkCell(worldSize, newCell.pos, {x: -1, y: 0})
-            let moveRightPos = checkCell(worldSize, newCell.pos, {x: 1, y: 0})
+          let secondCheck = checkCell(world, newCell.pos, {x: 0, y: - 1})
+          if (secondCheck && secondCheck.type == 'sand') {
+            let moveLeft = checkCell(world, newCell.pos, {x: -1, y: 0})
+            let moveRight = checkCell(world, newCell.pos, {x: 1, y: 0})
 
-            if (moveLeftPos && world[moveLeftPos.x][moveLeftPos.y].type == 'air') {
-              updateWorld(world, timer, newCell, moveLeftPos)
-            } else if (moveRightPos && world[moveRightPos.x][moveRightPos.y].type == 'air') {
-              updateWorld(world, timer, newCell, moveRightPos)
+            if (moveLeft && moveLeft.type == 'air') {
+              updateWorld(world, timer, newCell, moveLeft.pos)
+            } else if (moveRight && moveRight.type == 'air') {
+              updateWorld(world, timer, newCell, moveRight.pos)
             }
           }
         } 
         else {
           // first check random direction
           let dir = Math.sign(Math.random() * 2 - 1)
-          newCellPos = checkCell(worldSize, this.pos, {x: dir, y: 1})
-          if (newCellPos !== null) {
-            newCell = world[newCellPos.x][newCellPos.y]
-          }
-
-          if (!this.settled && newCellPos !== null && newCell.type === 'air') {
-            updateWorld(world, timer, this, newCellPos)
+          newCell = checkCell(world, this.pos, {x: dir, y: 1})
+          if (!this.settled && newCell !== null && newCell.type === 'air') {
+            updateWorld(world, timer, this, newCell.pos)
           } 
           else {
             if (this.wetness <= 0.1) {

@@ -21,18 +21,16 @@ export default class Steam extends Air{
   update(world, worldSize, timer, sunPos) {
     this.updateEnergy(world, sunPos)
     if (timer === this.sync || timer % this.updateInterval !== 0) return
-    let newCellPos = checkCell(worldSize, this.pos, {x: 0, y: Math.round(Math.random() -1.4)})
-    let newCell
-    if (newCellPos !== null) {
-      newCell = world[newCellPos.x][newCellPos.y]
+    let newCell = checkCell(world, this.pos, {x: 0, y: Math.round(Math.random() -1.4)})
+    if (newCell !== null) {
       if (newCell.type === 'air') { 
-        updateWorld(world, timer, this, newCellPos)
+        updateWorld(world, timer, this, newCell.pos)
         if (Math.round(Math.random() - 0.3)) {
           this.reset()
         }
       } 
       else if (newCell.type === 'fluid') {
-        swapCells(world, this.pos, newCellPos, timer)
+        swapCells(world, this.pos, newCell.pos, timer)
       }
       else {
         if (newCell.type === 'gas') {
@@ -41,9 +39,9 @@ export default class Steam extends Air{
           }
         }
         // first check random direction
-        newCellPos = checkCell(worldSize, this.pos, {x: this.direction, y: Math.round(Math.random() * 2 - 1)})
-        if (newCellPos !== null && world[newCellPos.x][newCellPos.y].type  === 'air') {
-          updateWorld(world, timer, this, newCellPos)
+        newCell = checkCell(world, this.pos, {x: this.direction, y: Math.round(Math.random() * 2 - 1)})
+        if (newCell !== null && newCell.type  === 'air') {
+          updateWorld(world, timer, this, newCell.pos)
         } 
         else {
           this.direction = Math.sign(Math.random() * 2 - 1)

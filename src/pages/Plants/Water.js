@@ -23,11 +23,10 @@ export default class Water extends Air {
     let blue = this.transparencyActual
     this.color[2] = 220 * blue
     if (timer === this.sync || timer % this.updateInterval !== 0) return
-    let newCellPos = checkCell(worldSize, this.pos, {x: 0, y: 1})
-    if (newCellPos !== null) {
-      let newCell = world[newCellPos.x][newCellPos.y]
+    let newCell = checkCell(world, this.pos, {x: 0, y: 1})
+    if (newCell !== null) {
       if (newCell.type === 'air') {
-        updateWorld(world, timer, this, newCellPos)
+        updateWorld(world, timer, this, newCell.pos)
       }
       else if (newCell.type === 'sand' && Math.random() < 0.05) {
         if (newCell.wetness <= 0.9) {
@@ -42,9 +41,9 @@ export default class Water extends Air {
 
       else {
         // first check random direction
-        newCellPos = checkCell(worldSize, this.pos, {x: this.direction, y: 0})
-        if (newCellPos !== null && world[newCellPos.x][newCellPos.y].type === 'air') {
-          updateWorld(world, timer, this, newCellPos)
+        newCell = checkCell(world, this.pos, {x: this.direction, y: 0})
+        if (newCell !== null && newCell.type === 'air') {
+          updateWorld(world, timer, this, newCell.pos)
         } 
         else {
           this.direction = this.direction * -1
@@ -75,12 +74,8 @@ export default class Water extends Air {
   }
 
   draw(p5, cellSize) {
-    //p5.stroke('#0033cc')
-    //p5.fill('#0033cc')
-    //console.log(this.transparencyActual / this.transparencyBase)
     p5.fill(this.color)
     p5.stroke(this.color)
-    // p5.stroke('white')
     p5.rect(this.pos.x * cellSize, this.pos.y*cellSize, cellSize, cellSize)
   }
 }

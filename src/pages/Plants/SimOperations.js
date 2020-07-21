@@ -1,9 +1,9 @@
 import Air from './Air'
-export const checkCell = (worldSize, currentPos, direction) => {
+export const checkCell = (world, currentPos, direction) => {
   let newX = currentPos.x + direction.x
   let newY = currentPos.y + direction.y
-  if (newX >=0 && newX < worldSize && newY >= 0 && newY < worldSize) {
-    return {x: newX, y: newY}
+  if (newX >=0 && newX < world.length && newY >= 0 && newY < world.length) {
+    return world[newX][newY]
   }
   return null
 }

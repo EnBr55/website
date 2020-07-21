@@ -37,7 +37,7 @@ export default class Plant extends Air {
     if (timer % 300 === 0) {
       let newPos = {x: Math.round(Math.random() * 2 - 1), y: Math.round(Math.random() * 2 - 1)}
       let cell = checkCell(worldSize, this.pos, newPos)
-      if (cell !== null && world[cell.x][cell.y].type === 'air') {
+      if (cell !== null && cell.type === 'air') {
         if (this.energy > 0.5 && this.wetness > 0.5) {
           this.spreadPlant(world, {x: this.pos.x + newPos.x, y: this.pos.y + newPos.y}, timer)
         }
