@@ -4,6 +4,7 @@ import Water from './Water'
 import Steam from './Steam'
 import Root from './Root'
 import Plant from './Plant'
+import { isValidPos } from './SimOperations'
 export const PlantSim = (p5) => {
   // props
   let simulationSpeed
@@ -63,12 +64,7 @@ export const PlantSim = (p5) => {
   }
 
   const onMousePress = () => {
-    //if (
-      //Math.floor(p5.mouseX / cellSize) !== mousePos.x ||
-      //Math.floor(p5.mouseY / cellSize) !== mousePos.y
-    //) {
-      //return
-    //}
+    if (!isValidPos(world, mousePos.x, mousePos.y)) return
     let clickedPos = mousePos
     let newCell
     switch (cellType) {
@@ -87,6 +83,9 @@ export const PlantSim = (p5) => {
       case 'plant':
         newCell = new Plant(clickedPos.x, clickedPos.y)
         break
+      case 'debug':
+        console.log(world[clickedPos.x][clickedPos.y])
+        return
       default:
         newCell = new Sand(clickedPos.x, clickedPos.y)
         break
@@ -95,8 +94,6 @@ export const PlantSim = (p5) => {
   }
 
   const drawPixel = (color, xpos, ypos) => {
-    //p5.pixels[pixelsHorizontal*4 - 3] = 255
-    //p5.pixels[pixelsHorizontal*4*Math.floor(cellWidth*127) + 4*(Math.floor(cellWidth*127))] = 255
     let firstIndex = Math.floor(pixelsHorizontal*4*Math.floor(cellWidth*ypos) + 4*(Math.floor(cellWidth*xpos)))
     let index
     for (let i = 0; i < cellWidth; i++) {
@@ -124,14 +121,6 @@ export const PlantSim = (p5) => {
     if (p5.mouseIsPressed) {
       onMousePress()
     }
-    mousePos = {
-      x: Math.min(Math.max(Math.floor(p5.mouseX / cellSize), 0), worldSize - 1),
-      y: Math.min(Math.max(Math.floor(p5.mouseY / cellSize), 0), worldSize - 1),
-    }
-    p5.stroke('black')
-    p5.noFill()
-    p5.rect(mousePos.x * cellSize, mousePos.y * cellSize, cellSize, cellSize)
-
     // SUN
     p5.stroke('orange')
     p5.fill('yellow')
@@ -149,45 +138,59 @@ export const PlantSim = (p5) => {
       windowDimensions.height/20
     )
 
-    for (let i = 0; i < simulationSpeed; i++) {}
-    let cell
-    //console.log('Active Cells: '+activeCells)
-    activeCells = 0
-    p5.loadPixels()
-    for (let outer in world) {
-      for (let inner in world[outer]) {
-        let transparencyNoise = (1 - Math.random() * 0.001)
-        cell = world[outer][world[outer].length - 1 - inner]
-        if (cell) {
-          // transparency propagation
+    for (let i = 0; i < simulationSpeed; i++) {
+      let cell
+      //console.log('Active Cells: '+activeCells)
+      activeCells = 0
+      p5.loadPixels()
+      for (let outer in world) {
+        for (let inner in world[outer]) {
+          //let transparencyNoise = (1 - Math.random() * 0.001)
+          cell = world[outer][world[outer].length - 1 - inner]
+          if (cell) {
+            // transparency propagation
 
-          // offset based on position
-          let thresholdOffset = (outer / world[0].length)
-          // reset transparency each tick
-          cell.transparencyActual = cell.transparencyBase
-          let newX = cell.pos.x + ((sunDirection > 0.45 + thresholdOffset) ? 1 : (sunDirection < -0.45 - thresholdOffset) ? -1 : 0)
-          let newY = cell.pos.y - 1
-          if (newX < world.length && newX >= 0 && newY < world[0].length && newY >= 0) {
-            let newCell = world[newX][newY]
-            if (newCell && newCell !== cell) {
-              cell.transparencyActual = cell.transparencyBase * (newCell.transparencyActual * transparencyNoise)
-            }
-          } else {
+            // offset based on position
+            let thresholdOffset = (outer / world[0].length)
+            // reset transparency each tick
             cell.transparencyActual = cell.transparencyBase
-          }
+            let newX = cell.pos.x + ((sunDirection > 0.45 + thresholdOffset) ? 1 : (sunDirection < -0.45 - thresholdOffset) ? -1 : 0)
+            let newY = cell.pos.y - 1
+            if (newX < world.length && newX >= 0 && newY < world[0].length && newY >= 0) {
+              let newCell = world[newX][newY]
+              if (newCell && newCell !== cell) {
+                //cell.transparencyActual = cell.transparencyBase * (newCell.transparencyActual * transparencyNoise)
+                cell.transparencyActual = cell.transparencyBase * (newCell.transparencyActual)
+              }
+            } else {
+              cell.transparencyActual = cell.transparencyBase
+            }
 
-          if(cell.needsUpdate) {
-            cell.update(world, worldSize, timer, sunPos)
-            activeCells++
+            if(cell.needsUpdate) {
+              cell.update(world, worldSize, timer, sunPos)
+              activeCells++
+            }
+            if(cell.type !== 'air') {
+              drawPixel(cell.color, cell.pos.x, cell.pos.y)
+            }
+            //render && cell.draw(p5, cellSize)
           }
-          if(cell.type !== 'air') {
-            drawPixel(cell.color, cell.pos.x, cell.pos.y)
-          }
-          //render && cell.draw(p5, cellSize)
         }
       }
+      p5.updatePixels()
+
+      mousePos = {
+        x: Math.max(Math.floor(p5.mouseX / cellSize)),
+        y: Math.max(Math.floor(p5.mouseY / cellSize)),
+      }
+
+      if (isValidPos(world, mousePos.x, mousePos.y)) {
+        p5.stroke('black')
+        p5.noFill()
+        p5.rect(mousePos.x * cellSize, mousePos.y * cellSize, cellSize, cellSize)
+      }
+
     }
-    p5.updatePixels()
   }
 
   p5.keyPressed = (a) => {

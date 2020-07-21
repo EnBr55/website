@@ -8,6 +8,10 @@ export const checkCell = (worldSize, currentPos, direction) => {
   return null
 }
 
+export const isValidPos = (world, x, y) => {
+  return x < world.length && x >= 0 && y < world.length && y >= 0
+}
+
 export const updateWorld = (world, timer, object, objectNewPos) => {
   const worldSize = world.length
   world[object.pos.x][object.pos.y] = new Air(object.pos.x, object.pos.y)

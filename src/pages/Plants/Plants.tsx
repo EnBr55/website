@@ -20,6 +20,7 @@ const Plants: React.FC = () => {
       <div className='controls' >
         <Button text='Root' click={() => setCellType('root')}/>
         <Button text='Plant' click={() => setCellType('plant')}/>
+        <Button text='Debug' click={() => setCellType('debug')}/>
       </div>
     </div>
   )

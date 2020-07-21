@@ -1,4 +1,4 @@
-import { checkCell, updateWorld, swapCells } from './SimOperations'
+import { checkCell, updateWorld, swapCells, isValidPos } from './SimOperations'
 import Air from './Air'
 export default class Sand extends Air {
   constructor(x, y) {
@@ -32,7 +32,7 @@ export default class Sand extends Air {
             spreadCell.needsUpdate = true
             this.wetness -= 0.1
           }
-          else if (spreadCell.type === 'root') {
+          else if (spreadCell.type === 'root' && spreadCell.wetness < 1) {
             console.log('yes')
             spreadCell.wetness += 0.2
             spreadCell.needsUpdate = true
@@ -51,6 +51,18 @@ export default class Sand extends Air {
       else {
         if (newCell.type === 'fluid' || newCell.type === 'gas'){
           swapCells(world, this.pos, newCellPos, timer)
+          // if there is more sand above new position, try move to the side instead
+          let secondCheckPos = checkCell(worldSize, newCell.pos, {x: 0, y: - 1})
+          if (secondCheckPos && world[secondCheckPos.x][secondCheckPos.y].type == 'sand') {
+            let moveLeftPos = checkCell(worldSize, newCell.pos, {x: -1, y: 0})
+            let moveRightPos = checkCell(worldSize, newCell.pos, {x: 1, y: 0})
+
+            if (moveLeftPos && world[moveLeftPos.x][moveLeftPos.y].type == 'air') {
+              updateWorld(world, timer, newCell, moveLeftPos)
+            } else if (moveRightPos && world[moveRightPos.x][moveRightPos.y].type == 'air') {
+              updateWorld(world, timer, newCell, moveRightPos)
+            }
+          }
         } 
         else {
           // first check random direction
