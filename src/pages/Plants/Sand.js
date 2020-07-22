@@ -40,46 +40,26 @@ export default class Sand extends Air {
         }
       }
     }
-    let newCell = checkCell(world, this.pos, {x: 0, y: 1})
-    if (newCell !== null) {
-      if (newCell.type === 'air') {
-        // updateWorld(world, timer, this, newCell.pos)
-        swapCells(world, this.pos, newCell.pos, timer)
-      } 
-      else {
-        if (newCell.type === 'fluid' || newCell.type === 'gas'){
-          swapCells(world, this.pos, newCell.pos, timer)
-          // if there is more sand above new position, try move to the side instead
-          let secondCheck = checkCell(world, newCell.pos, {x: 0, y: - 1})
-          if (secondCheck && secondCheck.type == 'sand') {
-            let moveLeft = checkCell(world, newCell.pos, {x: -1, y: 0})
-            let moveRight = checkCell(world, newCell.pos, {x: 1, y: 0})
 
-            if (moveLeft && moveLeft.type == 'air') {
-              // updateWorld(world, timer, newCell, moveLeft.pos)
-              swapCells(world, this.pos, moveLeft.pos, timer)
-            } else if (moveRight && moveRight.type == 'air') {
-              // updateWorld(world, timer, newCell, moveRight.pos)
-              swapCells(world, this.pos, moveRight.pos, timer)
-            }
+    if (!this.attemptMove(world, {x: 0, y: 1}, ['air'])) {
+      // if not swapped with air but swapped with fluid/gas
+      if (this.attemptMove(world, {x: 0, y: 1}, ['fluid', 'gas'])) {
+          let swappedCell = checkCell(world, this.pos, {x: 0, y: - 1})
+          let topCell = checkCell(world, swappedCell.pos, {x: 0, y: - 1})
+          if (topCell && topCell.type == 'sand') {
+            ! swappedCell.attemptMove(world, {x: 1, y: 0}, ['air']) &&
+              swappedCell.attemptMove(world, {x: 1, y: 0}, ['air'])
           }
-        } 
-        else {
+      } else {
           // first check random direction
           let dir = Math.sign(Math.random() * 2 - 1)
-          newCell = checkCell(world, this.pos, {x: dir, y: 1})
-          if (!this.settled && newCell !== null && newCell.type === 'air') {
-            // updateWorld(world, timer, this, newCell.pos)
-            swapCells(world, this.pos, newCell.pos, timer)
-          } 
-          else {
+          if (!this.attemptMove(world, {x: dir, y: 1}, ['air'])) {
             if (this.wetness <= 0.1) {
               this.needsUpdate = false
             }
           }
-        }
       }
-    } else { this.needsUpdate = false }
+    }
     this.sync = timer
   }
 

@@ -13,6 +13,15 @@ export default class Air {
     this.needsUpdate = false
   }
 
+  attemptMove(world, direction, swapTargets) {
+    let cell = checkCell(world, this.pos, direction)
+    if (cell && swapTargets.includes(cell.type)) {
+      swapCells(world, this.pos, cell.pos)
+      return true
+    }
+    return false
+  }
+
   draw(p5, cellSize) {
   }
 
