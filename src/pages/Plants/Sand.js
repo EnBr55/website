@@ -16,7 +16,7 @@ export default class Sand extends Air {
     this.wetness = 0
   }
 
-  update(world, worldSize, timer) {
+  update(world, timer) {
     this.color[0] = this.baseRed - 40 * this.wetness
     this.color[1] = 87 - 50 * this.wetness
     this.color[2] = 35 - 20 * this.wetness
@@ -43,7 +43,8 @@ export default class Sand extends Air {
     let newCell = checkCell(world, this.pos, {x: 0, y: 1})
     if (newCell !== null) {
       if (newCell.type === 'air') {
-        updateWorld(world, timer, this, newCell.pos)
+        // updateWorld(world, timer, this, newCell.pos)
+        swapCells(world, this.pos, newCell.pos, timer)
       } 
       else {
         if (newCell.type === 'fluid' || newCell.type === 'gas'){
@@ -55,9 +56,11 @@ export default class Sand extends Air {
             let moveRight = checkCell(world, newCell.pos, {x: 1, y: 0})
 
             if (moveLeft && moveLeft.type == 'air') {
-              updateWorld(world, timer, newCell, moveLeft.pos)
+              // updateWorld(world, timer, newCell, moveLeft.pos)
+              swapCells(world, this.pos, moveLeft.pos, timer)
             } else if (moveRight && moveRight.type == 'air') {
-              updateWorld(world, timer, newCell, moveRight.pos)
+              // updateWorld(world, timer, newCell, moveRight.pos)
+              swapCells(world, this.pos, moveRight.pos, timer)
             }
           }
         } 
@@ -66,7 +69,8 @@ export default class Sand extends Air {
           let dir = Math.sign(Math.random() * 2 - 1)
           newCell = checkCell(world, this.pos, {x: dir, y: 1})
           if (!this.settled && newCell !== null && newCell.type === 'air') {
-            updateWorld(world, timer, this, newCell.pos)
+            // updateWorld(world, timer, this, newCell.pos)
+            swapCells(world, this.pos, newCell.pos, timer)
           } 
           else {
             if (this.wetness <= 0.1) {

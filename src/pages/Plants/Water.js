@@ -1,4 +1,4 @@
-import { checkCell, updateWorld } from './SimOperations'
+import { checkCell, updateWorld, swapCells } from './SimOperations'
 import Steam from './Steam'
 import Air from './Air'
 export default class Water extends Air {
@@ -18,7 +18,7 @@ export default class Water extends Air {
     this.wetness = 1
   }
 
-  update(world, worldSize, timer, sunPos) {
+  update(world, timer, sunPos) {
     this.updateEnergy(world, sunPos)
     let blue = this.transparencyActual
     this.color[2] = 220 * blue
@@ -26,7 +26,8 @@ export default class Water extends Air {
     let newCell = checkCell(world, this.pos, {x: 0, y: 1})
     if (newCell !== null) {
       if (newCell.type === 'air') {
-        updateWorld(world, timer, this, newCell.pos)
+        // updateWorld(world, timer, this, newCell.pos)
+        swapCells(world, this.pos, newCell.pos, timer)
       }
       else if (newCell.type === 'sand' && Math.random() < 0.05) {
         if (newCell.wetness <= 0.9) {

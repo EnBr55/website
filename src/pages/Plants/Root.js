@@ -16,7 +16,7 @@ export default class Root extends Air {
     this.energy = 1
   }
 
-  update(world, worldSize, timer) {
+  update(world, timer) {
     if (timer === this.sync || timer % this.updateInterval !== 0) return
     this.sync = timer
   }

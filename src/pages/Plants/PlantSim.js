@@ -167,7 +167,7 @@ export const PlantSim = (p5) => {
             }
 
             if(cell.needsUpdate) {
-              cell.update(world, worldSize, timer, sunPos)
+              cell.update(world, timer, sunPos)
               activeCells++
             }
             if(cell.type !== 'air') {

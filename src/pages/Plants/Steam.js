@@ -18,13 +18,14 @@ export default class Steam extends Air{
     this.color = [150, 150, 150]
   }
 
-  update(world, worldSize, timer, sunPos) {
+  update(world, timer, sunPos) {
     this.updateEnergy(world, sunPos)
     if (timer === this.sync || timer % this.updateInterval !== 0) return
     let newCell = checkCell(world, this.pos, {x: 0, y: Math.round(Math.random() -1.4)})
     if (newCell !== null) {
       if (newCell.type === 'air') { 
-        updateWorld(world, timer, this, newCell.pos)
+        // updateWorld(world, timer, this, newCell.pos)
+        swapCells(world, this.pos, newCell.pos, timer)
         if (Math.round(Math.random() - 0.3)) {
           this.reset()
         }
@@ -41,7 +42,8 @@ export default class Steam extends Air{
         // first check random direction
         newCell = checkCell(world, this.pos, {x: this.direction, y: Math.round(Math.random() * 2 - 1)})
         if (newCell !== null && newCell.type  === 'air') {
-          updateWorld(world, timer, this, newCell.pos)
+          // updateWorld(world, timer, this, newCell.pos)
+          swapCells(world, this.pos, newCell.pos, timer)
         } 
         else {
           this.direction = Math.sign(Math.random() * 2 - 1)

@@ -9,7 +9,7 @@ export default class Air {
     this.color = [0, 0, 0]
   }
 
-  update(world, worldSize, timer) {
+  update(world, timer) {
     this.needsUpdate = false
   }
 

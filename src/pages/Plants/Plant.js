@@ -20,7 +20,7 @@ export default class Plant extends Air {
     this.energy = 0.6
   }
 
-  update(world, worldSize, timer, sunPos) {
+  update(world, timer, sunPos) {
     // energy color adjustments
     
     this.color[1] = this.baseGreen * Math.max(this.energy * this.wetness, 0.1)

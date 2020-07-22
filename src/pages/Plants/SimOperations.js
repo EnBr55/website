@@ -16,6 +16,8 @@ export const updateWorld = (world, timer, object, objectNewPos) => {
   const worldSize = world.length
   world[object.pos.x][object.pos.y] = new Air(object.pos.x, object.pos.y)
 
+  // Flag surrounding cells for update
+
   // left
   if (objectNewPos.x > 0) {
     world[objectNewPos.x - 1][objectNewPos.y].needsUpdate = true
@@ -49,11 +51,35 @@ export const updateWorld = (world, timer, object, objectNewPos) => {
 }
 
 export const swapCells = (world, cell1, cell2, timer) => {
+  const worldSize = world.length
   const oldCell = world[cell1.x][cell1.y]
   world[cell2.x][cell2.y].pos = world[cell1.x][cell1.y].pos
   world[cell2.x][cell2.y].reset()
   world[cell1.x][cell1.y] = world[cell2.x][cell2.y]
   world[cell2.x][cell2.y] = oldCell
+  if (cell2.x > 0) {
+    world[cell2.x - 1][cell2.y].needsUpdate = true
+  }
+  if (cell1.x > 0) {
+    world[cell1.x - 1][cell1.y].needsUpdate = true
+  }
+  // right
+  if (cell2.x < worldSize - 1) {
+    world[cell2.x + 1][cell2.y].needsUpdate = true
+  }
+  if (cell2.y > 0) {
+    world[cell2.x][cell2.y - 1].needsUpdate = true
+  }
+  if (cell1.y > 0) {
+    world[cell1.x][cell1.y - 1].needsUpdate = true
+  }
+  // down
+  if (cell2.y < worldSize - 1) {
+    world[cell2.x][cell2.y + 1].needsUpdate = true
+  }
+  if (cell1.y < worldSize - 1) {
+    world[cell1.x][cell1.y + 1].needsUpdate = true
+  }
   oldCell.pos = cell2
   cell1.sync = timer
   cell2.sync = timer
