@@ -2,6 +2,7 @@ import React from 'react'
 import './Projects.css'
 import { Link } from 'react-router-dom'
 import snakesGIF from './Resources/snakes.gif'
+import antsGIF from './Resources/ants.gif'
 import plants from './Resources/plants.png'
 import famsitePreview from './Resources/famsite.png'
 
@@ -26,6 +27,19 @@ const Projects: React.FC = () => {
             The app is still very much a work-in-progress, but the proof of concept is live and functional.
           </p>
         </a>
+      </div>
+      <hr />
+      <div className="project" >
+        <Link to='ants'>
+          <h2>Ants (?)</h2>
+          <img src={antsGIF} alt='ants in action' />
+          <p>
+            Just a weird emergence kind of thing. Lots of tweakable parameters that dramatically change the simulator. In principle, there are a bunch of ants that leave trails, and other ants sample the ground in front of them to detect these trails and possibly follow them.
+          </p>
+          <p>
+            Inspired by <u><a style={{color: '#22af22'}} href='https://www.youtube.com/channel/UCmtyQOKKmrMVaKuRXz02jbQ'>Sebastian Lague</a></u>.
+          </p>
+        </Link>
       </div>
       <hr />
       <div className="project" >
