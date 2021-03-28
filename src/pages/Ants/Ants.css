@@ -3,3 +3,8 @@
   height: auto !important;
 }
 
+.SimSettings {
+  display: grid;
+  grid-template-columns: 50% 50%;
+}
+

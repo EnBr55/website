@@ -3,7 +3,6 @@ import { isOutOfBounds } from './simOperations'
 export const AntSim = (p5) => {
 
   // defaults
-  console.log('first')
   let WIDTH = 256
   let TRAIL_LENGTH = 2
   let NUM_ANTS = 0
@@ -30,7 +29,6 @@ export const AntSim = (p5) => {
   let pixelsHorizontal
 
   p5.myCustomRedrawAccordingToNewPropsHandler = (props) => {
-    console.log(props)
     WIDTH = props.width
     TRAIL_LENGTH = props.trailLength
     NUM_ANTS = props.numAnts
@@ -42,7 +40,7 @@ export const AntSim = (p5) => {
     ants = []
     windowDimensions = getWindowDimensions()
 
-    p5.background(30, 30, 30)
+    p5.background(0, 0, 0)
     p5.pixelDensity(1)
     p5.loadPixels()
     p5.background(70, 70, 70)
@@ -152,7 +150,7 @@ export const AntSim = (p5) => {
   p5.draw = () => {
     dt++
     //p5.background(70, 70, 70)
-    if (dt === 1) {p5.background(30, 30, 30)}
+    if (dt === 1) {p5.background(0, 0, 0)}
     p5.loadPixels()
     for (let ant of ants) {
       ant.update(windowDimensions, dt % TRAIL_LENGTH, samplePoints)
@@ -160,12 +158,13 @@ export const AntSim = (p5) => {
     }
     p5.updatePixels()
 
-    if (dt % 1 === 0) {
-     p5.filter(p5.BLUR, 1)
+   p5.filter(p5.BLUR, 1)
+    if (dt % 5 === 0) {
+     //p5.filter(p5.THRESHOLD, 0.6)
     }
   }
   
   p5.keyPressed = (a) => {
-    console.log(a.code)
+    //console.log(a.code)
   }
 }
